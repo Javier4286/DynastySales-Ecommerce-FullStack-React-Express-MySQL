@@ -46,7 +46,8 @@ DynastySales is a professional Full Stack e-commerce application. It features a 
 ```env
 DB_USER=your_mysql_user
 DB_PASSWORD=your_mysql_password
-DB_NAME=dynastysales_db
+DB_NAME=ecommerce
+PORT=3000
 DB_HOST=127.0.0.1
 SESSION_SECRET=your_secret_key
 
@@ -106,7 +107,18 @@ DynastySales es una aplicación de comercio electrónico Full Stack profesional.
 
 1. Ir a la carpeta: `cd backend`.
 2. Instalar dependencias: `npm install`.
-3. Configurar el archivo `.env` con las credenciales locales de MySQL.
+3. Crear un archivo `.env` en la raíz de la carpeta `/backend` y agregar sus credenciales:
+```env
+DB_USER=tu_usuario_mysql
+DB_PASSWORD=tu_contraseña_mysql
+DB_NAME=ecommerce
+PORT=3000
+DB_HOST=127.0.0.1
+SESSION_SECRET=tu_clave_secreta
+
+```
+
+
 4. Iniciar: `npm run dev`.
 
 ### 3. Configuración del Frontend
