@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
-import Nav from "./navbar.styles";
-import SearchBar from "../searchBar/SearchBar";
-import LocalTime from "../localTime/LocalTime";
+import Nav from "./navBar.styles";
+import SearchBar from "../SearchBar/SearchBar";
+import LocalTime from "../LocalTime/LocalTime";
 import logoImg from "../../assets/dynastySales_logo.png";
 import {
   EditOutlined,
