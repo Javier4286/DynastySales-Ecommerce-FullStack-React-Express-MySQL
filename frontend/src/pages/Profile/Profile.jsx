@@ -11,7 +11,7 @@ import {
   StyledCard,
   StyledDivider,
   VerificationText,
-} from "./Profile.styles";
+} from "./profile.styles";
 
 const Profile = () => {
   const navigate = useNavigate();
