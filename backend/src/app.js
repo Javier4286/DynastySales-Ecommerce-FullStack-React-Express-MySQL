@@ -40,6 +40,11 @@ app.use("/carts", require("../src/routes/cartsRoutes"));
 app.use("/orders", require("../src/routes/ordersRoutes"));
 app.use("/location", require("../src/routes/locationRoutes"));
 
+// app.listen(PORT, () => {
+//   console.log(`Working at http://localhost:${PORT}\nPORT:${PORT}`);
+// });
+
 app.listen(PORT, () => {
-  console.log(`Working at http://localhost:${PORT}\nPORT:${PORT}`);
+  console.log(`Working at http://localhost:${PORT}`);
+  console.log("TEST_DB_URL:", process.env.DATABASE_URL ? "EXISTE" : "ESTÁ VACÍA");
 });
