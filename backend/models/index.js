@@ -11,16 +11,15 @@ const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
-  const sequelizeOptions = {
-    ...config,
+  sequelize = new Sequelize(process.env[config.use_env_variable], {
+    dialect: 'mysql',
     dialectOptions: {
       ssl: {
         require: true,
         rejectUnauthorized: false
       }
     }
-  };
-  sequelize = new Sequelize(process.env[config.use_env_variable], sequelizeOptions);
+  });
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
