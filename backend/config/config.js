@@ -17,13 +17,19 @@ module.exports = {
     dialect: "mysql"
   },
   production: {
-    use_env_variable: "DATABASE_URL",
-    dialect: "mysql",
+    use_env_variable: 'DATABASE_URL',
+    dialect: 'mysql',
     dialectOptions: {
       ssl: {
-        require: true,
+        minVersion: 'TLSv1.2',
         rejectUnauthorized: false
       }
+    },
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
     }
   }
 };
