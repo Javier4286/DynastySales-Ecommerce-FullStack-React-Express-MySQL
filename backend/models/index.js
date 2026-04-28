@@ -11,9 +11,6 @@ const db = {};
 
 let sequelize;
 
-sequelize.authenticate()
-  .then(() => console.log("DB CONNECTED OK"))
-  .catch(err => console.error("DB CONNECTION ERROR:", err));
 
 if (process.env.DATABASE_URL) {
   sequelize = new Sequelize(process.env.DATABASE_URL, {
@@ -32,6 +29,11 @@ if (process.env.DATABASE_URL) {
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
+
+sequelize.authenticate()
+  .then(() => console.log("DB CONNECTED OK"))
+  .catch(err => console.error("DB CONNECTION ERROR:", err));
+
 fs
   .readdirSync(__dirname)
   .filter(file => {
