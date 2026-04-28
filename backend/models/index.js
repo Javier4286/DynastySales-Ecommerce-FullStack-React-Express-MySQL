@@ -11,6 +11,10 @@ const db = {};
 
 let sequelize;
 
+sequelize.authenticate()
+  .then(() => console.log("DB CONNECTED OK"))
+  .catch(err => console.error("DB CONNECTION ERROR:", err));
+
 if (process.env.DATABASE_URL) {
   sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'mysql',
