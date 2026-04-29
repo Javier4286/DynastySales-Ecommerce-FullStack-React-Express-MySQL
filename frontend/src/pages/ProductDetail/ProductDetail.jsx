@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../utils/api";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Spin, message, Tag, Button } from "antd";
@@ -74,7 +75,7 @@ const ProductDetail = () => {
     <Section>
       <Article>
         <div className="image-container">
-          <img src={product.image} alt={product.album} />
+          <img src={`${API_BASE_URL}${product.image}`} alt={product.album} />
         </div>
 
         <section className="details">

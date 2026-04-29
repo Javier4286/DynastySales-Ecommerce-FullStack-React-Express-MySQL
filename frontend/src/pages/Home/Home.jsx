@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../utils/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { Spin, Empty, message, Tooltip } from "antd";
@@ -85,7 +86,7 @@ const Home = () => {
           <article key={product.id}>
             <img
               className="album-cover"
-              src={product.image}
+              src={`${API_BASE_URL}${product.image}`}
               alt={product.album}
             />
             <h1>{product.album}</h1>

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../utils/api";
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Empty, Modal, message, Tooltip, Spin } from "antd";
@@ -100,7 +101,7 @@ const Cart = () => {
               {cart.map((product) => (
                 <CartItem key={product.id}>
                   <img
-                    src={product.image}
+                    src={`${API_BASE_URL}${product.image}`}
                     alt={product.album}
                     className="thumb"
                   />

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../utils/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spin, Empty, message, Tooltip, Button } from "antd";
 import { ReloadOutlined, ArrowLeftOutlined } from "@ant-design/icons";
@@ -75,7 +76,11 @@ const Trash = () => {
       ) : (
         trashedProducts.map((product) => (
           <TrashItem key={product.id}>
-            <img className="thumb" src={product.image} alt={product.album} />
+            <img
+              className="thumb"
+              src={`${API_BASE_URL}${product.image}`}
+              alt={product.album}
+            />
             <div className="info">
               <h2>{product.album}</h2>
               <h3>{product.artist}</h3>
