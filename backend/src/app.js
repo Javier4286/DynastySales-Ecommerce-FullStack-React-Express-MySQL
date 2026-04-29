@@ -1,4 +1,4 @@
-require('dotenv').config(); // <--- PRIMERO QUE NADA
+require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const express = require("express");
@@ -8,9 +8,21 @@ const session = require("express-session");
 const app = express();
 const PORT = 3000;
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://dynastysales-ecommerce-fullstack-react.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
@@ -28,9 +40,9 @@ app.use(
     saveUninitialized: true,
     cookie: {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 1800000,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
     },
   }),
 );
@@ -41,11 +53,6 @@ app.use("/carts", require("../src/routes/cartsRoutes"));
 app.use("/orders", require("../src/routes/ordersRoutes"));
 app.use("/location", require("../src/routes/locationRoutes"));
 
-// app.listen(PORT, () => {
-//   console.log(`Working at http://localhost:${PORT}\nPORT:${PORT}`);
-// });
-
 app.listen(PORT, () => {
-  console.log(`Working at http://localhost:${PORT}`);
-  console.log("TEST_DB_URL:", process.env.DATABASE_URL ? "EXISTE" : "ESTÁ VACÍA");
+  console.log(`Server is running on port ${PORT}`);
 });
