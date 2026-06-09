@@ -11,25 +11,27 @@ const PORT = 3000;
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://dynastysales-ecommerce-full-stack-react-express-my-3k6gg8d07.vercel.app", // Tu URL específica
-  "https://dynastysales-ecommerce-full-stack.vercel.app", // La URL general por las dudas
-  // "http://localhost:5173",
-  // "https://dynastysales-ecommerce-fullstack-react.vercel.app",
+  "https://dynastysales-ecommerce-full-stack-react-express-my-3k6gg8d07.vercel.app",
+  "https://dynastysales-ecommerce-full-stack.vercel.app",
 ];
 
 app.use(
   cors({
-    origin: true,
-    // origin: function (origin, callback) {
-    //   if (!origin) return callback(null, true);
-    //   if (allowedOrigins.indexOf(origin) !== -1) {
-    //     callback(null, true);
-    //   } else {
-    //     callback(new Error("Not allowed by CORS"));
-    //   }
-    // },
-    // methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (process.env.NODE_ENV !== "production") {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
   }),
 );
 app.use(cookieParser());
