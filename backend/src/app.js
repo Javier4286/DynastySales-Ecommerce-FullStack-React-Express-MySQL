@@ -11,8 +11,7 @@ const PORT = 3000;
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://dynastysales-ecommerce-full-stack-react-express-my-3k6gg8d07.vercel.app",
-  "https://dynastysales-ecommerce-full-stack.vercel.app",
+  "https://dynasty-sales-ecommerce-full-stack.vercel.app",
 ];
 
 app.use(
@@ -31,7 +30,7 @@ app.use(
       }
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   }),
 );
 app.use(cookieParser());
