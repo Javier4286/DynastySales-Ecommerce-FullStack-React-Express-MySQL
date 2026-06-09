@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { Product, Category } = require("../../models");
+const sequelize = require("sequelize");
 
 const getProducts = async (req, res) => {
   try {
@@ -9,9 +10,20 @@ const getProducts = async (req, res) => {
     let whereClause = {};
 
     if (byArtistOrAlbum) {
+      const searchLower = byArtistOrAlbum.toLowerCase();
+
       whereClause[Op.or] = [
-        { artist: { [Op.iLike]: `%${byArtistOrAlbum}%` } },
-        { album: { [Op.iLike]: `%${byArtistOrAlbum}%` } },
+        sequelize.where(
+          sequelize.fn("LOWER", sequelize.col("artist")),
+          "LIKE",
+          `%${searchLower}%`,
+        ),
+
+        sequelize.where(
+          sequelize.fn("LOWER", sequelize.col("album")),
+          "LIKE",
+          `%${searchLower}%`,
+        ),
       ];
     }
 
