@@ -10,8 +10,8 @@ const getProducts = async (req, res) => {
 
     if (byArtistOrAlbum) {
       whereClause[Op.or] = [
-        { artist: { [Op.like]: `%${byArtistOrAlbum}%` } },
-        { album: { [Op.like]: `%${byArtistOrAlbum}%` } },
+        { artist: { [Op.iLike]: `%${byArtistOrAlbum}%` } },
+        { album: { [Op.iLike]: `%${byArtistOrAlbum}%` } },
       ];
     }
 
