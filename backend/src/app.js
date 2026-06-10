@@ -43,12 +43,12 @@ app.use(morgan("dev"));
 app.use(
   session({
     secret: "mySecret",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
       httpOnly: true,
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 1800000,
+      maxAge: 24 * 60 * 60 * 1000,
       secure: process.env.NODE_ENV === "production",
     },
   }),
