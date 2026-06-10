@@ -9,31 +9,19 @@ const session = require("express-session");
 const app = express();
 const PORT = 3000;
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://dynasty-sales-ecommerce-full-stack.vercel.app",
-];
+const currentOrigin =
+  process.env.NODE_ENV === "production"
+    ? "https://dynasty-sales-ecommerce-full-stack.vercel.app"
+    : "http://localhost:5173";
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-
-      if (process.env.NODE_ENV !== "production") {
-        return callback(null, true);
-      }
-
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-
+    origin: currentOrigin,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   }),
 );
+
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
