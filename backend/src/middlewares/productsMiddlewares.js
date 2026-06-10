@@ -59,15 +59,9 @@ const productRules = [
   body("image")
     .trim()
     .notEmpty()
-    .withMessage("Image URL is required")
-    .isURL({
-      protocols: ["http", "https"],
-      require_tld: false,
-      require_protocol: true,
-    })
-    .withMessage("Image must be a valid URL")
+    .withMessage("Image URL or path is required")
     .isLength({ max: 255 })
-    .withMessage("Image URL is too long (max 255 characters)"),
+    .withMessage("Image path is too long (max 255 characters)"),
 
   validateFields,
 ];
