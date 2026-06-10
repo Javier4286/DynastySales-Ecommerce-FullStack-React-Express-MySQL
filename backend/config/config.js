@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 
 module.exports = {
   development: {
@@ -7,29 +7,29 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     dialect: "mysql",
-    port: process.env.DB_PORT
+    port: process.env.DB_PORT,
   },
   test: {
     username: "root",
     password: null,
     database: "database_test",
     host: "127.0.0.1",
-    dialect: "mysql"
+    dialect: "mysql",
   },
   production: {
     use_env_variable: "DATABASE_URL",
     dialect: "mysql",
     dialectOptions: {
       ssl: {
-        minVersion: 'TLSv1.2',
-        rejectUnauthorized: false
-      }
+        minVersion: "TLSv1.2",
+        rejectUnauthorized: false,
+      },
     },
     pool: {
       max: 5,
       min: 0,
       acquire: 30000,
-      idle: 10000
-    }
-  }
+      idle: 10000,
+    },
+  },
 };
