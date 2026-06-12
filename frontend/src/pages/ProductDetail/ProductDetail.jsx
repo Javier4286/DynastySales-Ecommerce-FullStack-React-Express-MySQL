@@ -75,7 +75,15 @@ const ProductDetail = () => {
     <Section>
       <Article>
         <div className="image-container">
-          <img src={`${API_BASE_URL}${product.image}`} alt={product.album} />
+          <img
+            src={
+              product.image.startsWith("http://") ||
+              product.image.startsWith("https://")
+                ? product.image
+                : `${API_BASE_URL}${product.image}`
+            }
+            alt={product.album}
+          />
         </div>
 
         <section className="details">

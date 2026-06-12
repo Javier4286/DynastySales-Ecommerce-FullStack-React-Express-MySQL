@@ -78,7 +78,12 @@ const Trash = () => {
           <TrashItem key={product.id}>
             <img
               className="thumb"
-              src={`${API_BASE_URL}${product.image}`}
+              src={
+                product.image.startsWith("http://") ||
+                product.image.startsWith("https://")
+                  ? product.image
+                  : `${API_BASE_URL}${product.image}`
+              }
               alt={product.album}
             />
             <div className="info">
