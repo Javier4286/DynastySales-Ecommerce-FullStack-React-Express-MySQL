@@ -13,7 +13,7 @@ const createOrder = async (req, res) => {
     });
 
     if (cart.length === 0) {
-      return res.status(400).json({ message: "You cart is empty" });
+      return res.status(400).json({ message: "Your cart is empty" });
     }
 
     for (const item of cart) {
@@ -54,7 +54,7 @@ const createOrder = async (req, res) => {
 
     return res
       .status(201)
-      .json({ message: "Order placed successfully!", orderId: newOrder.id });
+      .json({ message: "Order placed successfully", orderId: newOrder.id });
   } catch (error) {
     return res.status(500).json({ message: "Could not process purchase" });
   }

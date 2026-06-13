@@ -36,7 +36,7 @@ const registerRules = [
     .notEmpty()
     .withMessage("Phone number is required")
     .isLength({ max: 20 })
-    .withMessage("Phone number too long (max 20"),
+    .withMessage("Phone number too long (max 20)"),
 
   body("address")
     .trim()
@@ -98,7 +98,7 @@ const editRules = [
     .notEmpty()
     .withMessage("Phone number is required")
     .isLength({ max: 20 })
-    .withMessage("Phone number too long (max 20"),
+    .withMessage("Phone number too long (max 20)"),
 
   body("address")
     .trim()

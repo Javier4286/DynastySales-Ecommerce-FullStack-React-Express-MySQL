@@ -20,7 +20,7 @@ const orderRules = [
 
   body("delivery_method")
     .isIn(["pickup", "delivery"])
-    .withMessage("Delivery method must be 'pickup or 'delivery'"),
+    .withMessage("Delivery method must be 'pickup' or 'delivery'"),
 
   body("shipping_address")
     .if(body("delivery_method").equals("delivery"))

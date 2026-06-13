@@ -124,10 +124,10 @@ const checkAuth = async (req, res) => {
       req.session.destroy();
       return res.status(204).end();
     }
-    
+
     return res.status(200).json({ user, message: "Authenticated" });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 

@@ -32,9 +32,9 @@ const reverseGeocode = async (req, res) => {
 
     const country = data.address?.country || "Unknown Country";
 
-    res.json({ location: `${city}, ${country}` });
+    return res.json({ location: `${city}, ${country}` });
   } catch (error) {
-    res.status(500).json({ location: "Location unavailable" });
+    return res.status(500).json({ message: "Location unavailable" });
   }
 };
 

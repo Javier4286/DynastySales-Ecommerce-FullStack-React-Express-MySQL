@@ -14,9 +14,9 @@ const getCart = async (req, res) => {
       quantity: item.quantity,
     }));
 
-    res.status(200).json(response);
+    return res.status(200).json(response);
   } catch (error) {
-    return res.status(500).json({ error: "Error retrieving cart" });
+    return res.status(500).json({ message: "Error retrieving cart" });
   }
 };
 
@@ -47,10 +47,10 @@ const addToCart = async (req, res) => {
     } else {
       await ShoppingCart.create({ user_id, product_id, quantity });
 
-      res.status(201).json({ message: "Product added to cart" });
+      return res.status(201).json({ message: "Product added to cart" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Error adding to cart" });
+    return res.status(500).json({ message: "Error adding to cart" });
   }
 };
 
@@ -65,15 +65,9 @@ const removeFromCart = async (req, res) => {
     if (!item)
       return res.status(404).json({ message: "Item not found in cart" });
 
-    if (item.quantity > 1) {
-      await item.update({ quantity: item.quantity - 1 });
+    await item.destroy();
 
-      return res.status(200).json({ message: "Quantity decreased" });
-    } else {
-      await item.destroy();
-
-      return res.status(200).json({ message: "Product removed from cart" });
-    }
+    return res.status(200).json({ message: "Product removed from cart" });
   } catch (error) {
     return res.status(500).json({ message: "Error removing from cart" });
   }
