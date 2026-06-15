@@ -4,18 +4,20 @@ import {
   MailOutlined,
   WhatsAppOutlined,
   GithubOutlined,
+  LinkedinOutlined,
   EnvironmentOutlined,
-  GlobalOutlined,
 } from "@ant-design/icons";
 import logoImg from "../../assets/dynastySales_logo.png";
+import useThemeStore from "../../store/useThemeStore";
 
 const { Title, Text } = Typography;
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { isDarkMode } = useThemeStore();
 
   return (
-    <FooterContainer>
+    <FooterContainer $isDarkMode={isDarkMode}>
       <div className="footer-content">
         <div className="footer-section">
           <div className="footer-brand-wrapper">
@@ -27,7 +29,11 @@ const Footer = () => {
             <div className="footer-logo-text">DynastySales</div>
           </div>
           <Text
-            style={{ color: "#434343", lineHeight: "1.6", fontWeight: 500 }}
+            style={{
+              color: isDarkMode ? "#b3b3b3" : "#434343",
+              lineHeight: "1.6",
+              fontWeight: 500,
+            }}
           >
             Premium vinyl and music store. We bring the best artists and albums
             directly to your doorstep with quality and passion.
@@ -67,9 +73,14 @@ const Footer = () => {
             >
               <GithubOutlined /> Javier4286
             </a>
-            <Text className="contact-item" style={{ cursor: "pointer" }}>
-              <GlobalOutlined /> Privacy Policy
-            </Text>
+            <a
+              href="https://linkedin.com/in/javier-alexis-gonzalez-0194113ba"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-item"
+            >
+              <LinkedinOutlined /> LinkedIn
+            </a>
           </Space>
         </div>
       </div>

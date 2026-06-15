@@ -9,20 +9,26 @@ export const ScrollButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1a1a1a;
-  color: white;
+  background-color: ${({ $isDarkMode }) =>
+    $isDarkMode ? "#ffffff" : "#1a1a1a"};
+  color: ${({ $isDarkMode }) => ($isDarkMode ? "#121212" : "#ffffff")};
   border-radius: 50%;
   cursor: pointer;
   z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: ${({ $isDarkMode }) =>
+    $isDarkMode
+      ? "0 4px 15px rgba(0, 0, 0, 0.4)"
+      : "0 4px 10px rgba(0, 0, 0, 0.2)"};
   transition: all 0.3s ease;
   opacity: ${({ $show }) => ($show ? "1" : "0")};
   visibility: ${({ $show }) => ($show ? "visible" : "hidden")};
   transform: ${({ $show }) => ($show ? "translateY(0)" : "translateY(20px)")};
 
   &:hover {
-    background-color: #434343;
-    transform: scale(1.1);
+    background-color: ${({ $isDarkMode }) =>
+      $isDarkMode ? "#e0e0e0" : "#434343"};
+    transform: ${({ $show }) =>
+      $show ? "translateY(-5px) scale(1.1)" : "translateY(20px)"};
   }
 
   @media (max-width: 768px) {

@@ -10,7 +10,6 @@ import {
   Select,
   Divider,
   Button,
-  Space,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import api from "../../utils/api";
@@ -20,7 +19,10 @@ import {
   StyledButton,
   StyledCard,
   CancelButton,
+  FormActionsContainer,
+  SelectDropdownStyles,
 } from "./addProduct.styles";
+import useThemeStore from "../../store/useThemeStore";
 
 const { TextArea } = Input;
 
@@ -31,6 +33,7 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const inputRef = useRef(null);
+  const { isDarkMode } = useThemeStore();
 
   const getCategories = async () => {
     try {
@@ -42,8 +45,10 @@ const AddProduct = () => {
           value: cat.id,
         })),
       );
-    } catch {
-      message.error("Error fetching categories");
+    } catch (error) {
+      error.response?.data?.errors?.forEach((err) =>
+        message.error(err.message),
+      );
     }
   };
 
@@ -71,23 +76,14 @@ const AddProduct = () => {
 
       setTimeout(() => inputRef.current?.focus(), 0);
     } catch (error) {
-      const backendErrors = error?.response?.data?.errors;
-
-      if (backendErrors) {
-        backendErrors.forEach((err) => message.error(err.message));
-      } else {
-        message.error("Error adding category");
-      }
+      error.response?.data?.errors?.forEach((err) =>
+        message.error(err.message),
+      );
     }
   };
 
   const handleBackendErrors = (error) => {
-    const backendErrors = error?.response?.data?.errors;
-
-    if (!backendErrors) {
-      message.error("Unexpected error");
-      return;
-    }
+    const backendErrors = error?.response?.data?.errors || [];
 
     form.setFields(
       backendErrors.map((err) => ({
@@ -95,14 +91,24 @@ const AddProduct = () => {
         errors: [err.message],
       })),
     );
+  };
 
-    backendErrors.forEach((err) => message.error(err.message));
+  const inputThemeStyles = {
+    backgroundColor: isDarkMode ? "#2c2c2c" : "#ffffff",
+    borderColor: isDarkMode ? "#434343" : "#d9d9d9",
+    color: isDarkMode ? "#ffffff" : "rgba(0, 0, 0, 0.88)",
   };
 
   return (
-    <AddProductContainer>
+    <AddProductContainer $isDarkMode={isDarkMode}>
+      <SelectDropdownStyles $isDarkMode={isDarkMode} />
       <StyledCard
-        title={<CenteredTitle level={2}>Create New Product</CenteredTitle>}
+        $isDarkMode={isDarkMode}
+        title={
+          <CenteredTitle level={2} $isDarkMode={isDarkMode}>
+            Create New Product
+          </CenteredTitle>
+        }
         bordered={false}
       >
         <Form
@@ -135,6 +141,7 @@ const AddProduct = () => {
                 <Input
                   size="large"
                   placeholder="Please enter the album title"
+                  style={inputThemeStyles}
                 />
               </Form.Item>
             </Col>
@@ -143,6 +150,7 @@ const AddProduct = () => {
                 <Input
                   size="large"
                   placeholder="Please enter the artist name"
+                  style={inputThemeStyles}
                 />
               </Form.Item>
             </Col>
@@ -155,27 +163,57 @@ const AddProduct = () => {
                   size="large"
                   options={categories}
                   placeholder="Please select a category"
+                  popupClassName="custom-category-dropdown"
+                  dropdownClassName="custom-category-dropdown"
+                  dropdownStyle={{
+                    backgroundColor: isDarkMode ? "#1f1f1f" : "#ffffff",
+                  }}
                   dropdownRender={(menu) => (
-                    <>
+                    <div
+                      style={{
+                        backgroundColor: isDarkMode ? "#1f1f1f" : "#ffffff",
+                      }}
+                    >
                       {menu}
-                      <Divider style={{ margin: "8px 0" }} />
-                      <Space style={{ padding: "0 8px 4px" }}>
+                      <Divider
+                        style={{
+                          margin: "8px 0",
+                          borderColor: isDarkMode ? "#434343" : "#f0f0f0",
+                        }}
+                      />
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "8px",
+                          padding: "0 8px 4px",
+                        }}
+                      >
                         <Input
                           ref={inputRef}
                           value={newCategoryName}
                           onChange={(e) => setNewCategoryName(e.target.value)}
                           placeholder="New category"
+                          style={{
+                            backgroundColor: isDarkMode ? "#2c2c2c" : "#ffffff",
+                            borderColor: isDarkMode ? "#434343" : "#d9d9d9",
+                            color: isDarkMode
+                              ? "#ffffff"
+                              : "rgba(0, 0, 0, 0.88)",
+                          }}
                         />
                         <Button
                           type="text"
                           icon={<PlusOutlined />}
                           onClick={addItem}
-                          style={{ fontWeight: 600, color: "#1a1a1a" }}
+                          style={{
+                            fontWeight: 600,
+                            color: isDarkMode ? "#1890ff" : "#1a1a1a",
+                          }}
                         >
                           Add
                         </Button>
-                      </Space>
-                    </>
+                      </div>
+                    </div>
                   )}
                 />
               </Form.Item>
@@ -183,7 +221,7 @@ const AddProduct = () => {
             <Col xs={24} md={12}>
               <Form.Item label="Release Year" name="release_year">
                 <InputNumber
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", ...inputThemeStyles }}
                   size="large"
                   placeholder="Please enter the release year"
                 />
@@ -195,8 +233,16 @@ const AddProduct = () => {
             <Col xs={12} md={8}>
               <Form.Item label="Price" name="price">
                 <InputNumber
-                  prefix="$"
-                  style={{ width: "100%" }}
+                  prefix={
+                    <span
+                      style={{
+                        color: isDarkMode ? "#8c8c8c" : "rgba(0, 0, 0, 0.45)",
+                      }}
+                    >
+                      $
+                    </span>
+                  }
+                  style={{ width: "100%", ...inputThemeStyles }}
                   size="large"
                   placeholder="Please enter the price"
                 />
@@ -205,7 +251,7 @@ const AddProduct = () => {
             <Col xs={12} md={8}>
               <Form.Item label="Stock" name="stock">
                 <InputNumber
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", ...inputThemeStyles }}
                   size="large"
                   placeholder="Please enter the stock"
                 />
@@ -213,7 +259,11 @@ const AddProduct = () => {
             </Col>
             <Col xs={24} md={8}>
               <Form.Item label="Image URL" name="image">
-                <Input size="large" placeholder="Please enter the image URL" />
+                <Input
+                  size="large"
+                  placeholder="Please enter the image URL"
+                  style={inputThemeStyles}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -222,29 +272,26 @@ const AddProduct = () => {
             <TextArea
               rows={4}
               placeholder="Please enter the product description"
-              style={{ borderRadius: "8px" }}
+              style={{ ...inputThemeStyles, borderRadius: "8px" }}
             />
           </Form.Item>
 
-          <Form.Item style={{ marginTop: 20, marginBottom: 0 }}>
-            <Row gutter={[16, 16]}>
-              <Col xs={24} sm={12}>
-                <CancelButton block onClick={() => navigate("/")}>
-                  Cancel
-                </CancelButton>
-              </Col>
-              <Col xs={24} sm={12}>
-                <StyledButton
-                  type="primary"
-                  htmlType="submit"
-                  block
-                  loading={loading}
-                >
-                  Create Product
-                </StyledButton>
-              </Col>
-            </Row>
-          </Form.Item>
+          <FormActionsContainer>
+            <CancelButton
+              $isDarkMode={isDarkMode}
+              onClick={() => navigate("/")}
+            >
+              Cancel
+            </CancelButton>
+            <StyledButton
+              $isDarkMode={isDarkMode}
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+            >
+              Create Product
+            </StyledButton>
+          </FormActionsContainer>
         </Form>
       </StyledCard>
     </AddProductContainer>

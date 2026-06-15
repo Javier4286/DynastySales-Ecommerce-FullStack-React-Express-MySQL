@@ -12,13 +12,17 @@ import {
   ShoppingCartOutlined,
   UserAddOutlined,
   RestOutlined,
+  SunOutlined,
+  MoonOutlined,
 } from "@ant-design/icons";
 import { Tooltip } from "antd";
+import useThemeStore from "../../store/useThemeStore";
 
 const Navbar = () => {
   const { user, logout } = useUserStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isDarkMode, toggleTheme } = useThemeStore();
 
   const handleLogout = async () => {
     await logout();
@@ -31,7 +35,7 @@ const Navbar = () => {
   const isHomePage = location.pathname === "/";
 
   return (
-    <Nav>
+    <Nav $isDarkMode={isDarkMode}>
       <div className="nav-top">
         <div className="nav-left">{!isAuthPage && <LocalTime />}</div>
 
@@ -44,15 +48,24 @@ const Navbar = () => {
         <div className="nav-actions">
           {!isAuthPage && (
             <>
+              <Tooltip title={isDarkMode ? "Light Mode" : "Dark Mode"}>
+                <button
+                  onClick={toggleTheme}
+                  className={`theme-btn ${isDarkMode ? "dark" : "light"}`}
+                >
+                  {isDarkMode ? <SunOutlined /> : <MoonOutlined />}
+                </button>
+              </Tooltip>
+
               {!user ? (
                 <>
                   <Tooltip title="Register">
-                    <Link to="/register">
+                    <Link to="/register" className="action-icon-wrapper">
                       <UserAddOutlined />
                     </Link>
                   </Tooltip>
                   <Tooltip title="Login">
-                    <Link to="/login">
+                    <Link to="/login" className="action-icon-wrapper">
                       <LoginOutlined />
                     </Link>
                   </Tooltip>
@@ -62,31 +75,34 @@ const Navbar = () => {
                   <span className="welcome-msg">Hello {user.first_name}!</span>
                   {!user.is_admin ? (
                     <Tooltip title="My Cart">
-                      <Link to="/cart">
+                      <Link to="/cart" className="action-icon-wrapper">
                         <ShoppingCartOutlined />
                       </Link>
                     </Tooltip>
                   ) : (
                     <>
                       <Tooltip title="Trash / Restore">
-                        <Link to="/admin/trash">
+                        <Link to="/admin/trash" className="action-icon-wrapper">
                           <RestOutlined />
                         </Link>
                       </Tooltip>
                       <Tooltip title="Add Product">
-                        <Link to="/addProduct">
+                        <Link to="/addProduct" className="action-icon-wrapper">
                           <PlusSquareOutlined />
                         </Link>
                       </Tooltip>
                     </>
                   )}
                   <Tooltip title="Edit Profile">
-                    <Link to="/editProfile">
+                    <Link to="/editProfile" className="action-icon-wrapper">
                       <EditOutlined />
                     </Link>
                   </Tooltip>
                   <Tooltip title="Logout">
-                    <button onClick={handleLogout} className="logout-btn">
+                    <button
+                      onClick={handleLogout}
+                      className="logout-btn action-icon-wrapper"
+                    >
                       <LogoutOutlined />
                     </button>
                   </Tooltip>

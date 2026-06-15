@@ -20,7 +20,9 @@ const Register = () => {
 
       navigate("/login");
     } catch (error) {
-      message.error(error.response?.data?.message || "Registration failed");
+      error.response?.data?.errors?.forEach((err) =>
+        message.error(err.message),
+      );
     }
   };
 

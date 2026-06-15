@@ -2,8 +2,11 @@ import { ClockCircleOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import { TimeContainer } from "./localTime.styles";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../utils/api";
+import useThemeStore from "../../store/useThemeStore";
 
 const LocalTime = () => {
+  const { isDarkMode } = useThemeStore();
+
   const { data: time } = useQuery({
     queryKey: ["currentTime"],
     queryFn: () => new Date().toLocaleTimeString(),
@@ -27,17 +30,15 @@ const LocalTime = () => {
 
         return response.data.location;
       } catch (error) {
-        return "Location unavailable";
+        return error.response?.data?.message || error.message;
       }
     },
-
     staleTime: Infinity,
-
     refetchOnWindowFocus: false,
   });
 
   return (
-    <TimeContainer>
+    <TimeContainer $isDarkMode={isDarkMode}>
       <EnvironmentOutlined style={{ color: "#1890ff", fontSize: "1.1rem" }} />
       <span className="location-text">{location || "Locating..."}</span>
       <span className="time-divider">|</span>

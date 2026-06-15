@@ -3,11 +3,12 @@ import styled from "styled-components";
 const Nav = styled.nav`
   display: flex;
   flex-direction: column;
-  background-color: #bbdefb;
+  background-color: ${(props) => (props.$isDarkMode ? "#1f1f1f" : "#bbdefb")};
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: background-color 0.3s ease;
   font-family:
     "Inter",
     system-ui,
@@ -47,42 +48,97 @@ const Nav = styled.nav`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 35px;
+    gap: 16px;
   }
 
   .welcome-msg {
     font-weight: 600;
-    color: #34495e;
+    color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#34495e")};
     font-size: 1rem;
+    margin-right: 4px;
+    transition: color 0.3s ease;
   }
 
-  .anticon {
-    font-size: 26px !important;
-    color: #34495e !important;
-    transition: all 0.2s;
+  .action-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background-color: ${(props) =>
+      props.$isDarkMode
+        ? "rgba(255, 255, 255, 0.1)"
+        : "rgba(255, 255, 255, 0.5)"};
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+
     &:hover {
-      color: #1a1a1a !important;
+      background-color: ${(props) =>
+        props.$isDarkMode
+          ? "rgba(255, 255, 255, 0.25)"
+          : "rgba(255, 255, 255, 0.9)"};
       transform: translateY(-2px);
     }
   }
 
-  .anticon-rest:hover {
+  .anticon {
+    font-size: 20px !important;
+    color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#34495e")} !important;
+    transition: color 0.2s;
+  }
+
+  .action-icon-wrapper:hover .anticon {
+    color: ${(props) => (props.$isDarkMode ? "#1890ff" : "#1a1a1a")} !important;
+  }
+
+  .action-icon-wrapper:hover .anticon-rest {
     color: #e67e22 !important;
   }
 
   .logout-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
     padding: 0;
-    display: flex;
-    align-items: center;
-
     .anticon-logout {
       color: #ff4d4f !important;
-      &:hover {
+    }
+    &:hover {
+      background-color: ${(props) =>
+        props.$isDarkMode ? "#5c2526" : "#fff1f0"};
+      .anticon-logout {
         color: #cf1322 !important;
       }
+    }
+  }
+
+  .theme-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.light {
+      background-color: #2c3e50;
+      .anticon {
+        color: #f1c40f !important;
+      }
+    }
+
+    &.dark {
+      background-color: #f1c40f;
+      .anticon {
+        color: #2c3e50 !important;
+      }
+    }
+
+    &:hover {
+      transform: scale(1.08);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
   }
 
@@ -92,12 +148,12 @@ const Nav = styled.nav`
     padding: 0 2rem 1.5rem 2rem;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     .nav-top {
       display: flex;
       flex-direction: column;
-      padding: 8px 10px;
-      gap: 5px;
+      padding: 12px 10px;
+      gap: 12px;
       height: auto;
     }
 
@@ -108,22 +164,23 @@ const Nav = styled.nav`
     .logo-wrapper {
       padding: 0;
       img {
-        height: 45px;
+        height: 55px;
       }
     }
 
     .nav-actions {
-      width: auto;
-      align-self: center;
-      gap: 20px;
-      padding-bottom: 5px;
+      width: 100%;
+      justify-content: center;
+      gap: 16px;
+      padding-bottom: 4px;
+
       .welcome-msg {
         display: none;
       }
     }
 
     .nav-bottom {
-      padding: 5px 10px 10px;
+      padding: 8px 12px 16px 12px;
     }
   }
 `;

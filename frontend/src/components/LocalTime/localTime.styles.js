@@ -9,7 +9,7 @@ export const TimeContainer = styled.div`
 
   .location-text {
     font-size: 0.9rem;
-    color: #455a64;
+    color: ${(props) => (props.$isDarkMode ? "#b3b3b3" : "#455a64")};
     font-weight: 500;
     letter-spacing: 0.3px;
   }
@@ -25,14 +25,12 @@ export const TimeContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(24, 144, 255, 0.08);
-    padding: 5px, 12px;
+    background: ${(props) =>
+      props.$isDarkMode
+        ? "rgba(24, 144, 255, 0.15)"
+        : "rgba(24, 144, 255, 0.08)"};
+    padding: 5px 12px;
     border-radius: 20px;
-    transition: all 0.3 ease;
-  }
-
-  &:hover {
-    background: rgba(24, 144, 255, 0.15);
   }
 
   .clock-icon {

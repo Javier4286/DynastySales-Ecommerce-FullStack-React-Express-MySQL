@@ -5,6 +5,7 @@ import useSearchBarStore from "../../store/useSearchBarStore";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../utils/api";
 import { Bar } from "./searchBar.styles";
+import useThemeStore from "../../store/useThemeStore";
 
 const { Option } = Select;
 
@@ -12,6 +13,7 @@ const SearchBar = () => {
   const [showPriceFilters, setShowPriceFilters] = useState(false);
   const [showCategoryFilters, setShowCategoryFilters] = useState(false);
   const { searchTerms, setSearchTerms, clearSearchTerms } = useSearchBarStore();
+  const { isDarkMode } = useThemeStore();
 
   const { data: categories = [] } = useQuery({
     queryKey: ["categories"],
@@ -27,13 +29,26 @@ const SearchBar = () => {
     setShowCategoryFilters(false);
   };
 
+  const hasActiveFilters =
+    searchTerms.byArtistOrAlbum ||
+    searchTerms.byMinPrice ||
+    searchTerms.byMaxPrice ||
+    searchTerms.byCategory ||
+    searchTerms.bySort ||
+    showPriceFilters ||
+    showCategoryFilters;
+
   return (
-    <Bar>
+    <Bar $isDarkMode={isDarkMode}>
       <div className="search-main-row">
         <Input
           className="search-input"
-          placeholder="What are you looking for today?"
-          prefix={<SearchOutlined style={{ color: "#bfbfbf" }} />}
+          placeholder="Search by album or artist..."
+          prefix={
+            <SearchOutlined
+              style={{ color: isDarkMode ? "#8c8c8c" : "#bfbfbf" }}
+            />
+          }
           value={searchTerms.byArtistOrAlbum}
           onChange={(e) => setSearchTerms({ byArtistOrAlbum: e.target.value })}
           allowClear
@@ -42,25 +57,30 @@ const SearchBar = () => {
         <div className="filter-controls">
           <Space size="middle">
             <Checkbox
+              className="filter-checkbox"
               checked={showPriceFilters}
               onChange={(e) => setShowPriceFilters(e.target.checked)}
             >
               Price
             </Checkbox>
             <Checkbox
+              className="filter-checkbox"
               checked={showCategoryFilters}
               onChange={(e) => setShowCategoryFilters(e.target.checked)}
             >
               Category
             </Checkbox>
-            <Button
-              type="text"
-              icon={<UndoOutlined />}
-              onClick={handleReset}
-              danger
-            >
-              Reset
-            </Button>
+            {hasActiveFilters && (
+              <Button
+                type="text"
+                icon={<UndoOutlined />}
+                onClick={handleReset}
+                danger
+                className="reset-btn"
+              >
+                Reset
+              </Button>
+            )}
           </Space>
         </div>
       </div>
@@ -68,7 +88,7 @@ const SearchBar = () => {
       {(showPriceFilters || showCategoryFilters) && (
         <div className="filters-row">
           {showPriceFilters && (
-            <Space>
+            <Space className="price-filters-space">
               <Input
                 type="number"
                 placeholder="Min $"

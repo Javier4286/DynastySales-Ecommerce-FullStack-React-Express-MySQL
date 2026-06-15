@@ -42,13 +42,42 @@ const Cart = () => {
 
       await updateQuantity(user.id, productId, newQuantity);
     } catch (error) {
-      message.error("Failed to update quantity");
+      // message.error("Failed to update quantity");
+      error.response?.data?.errors?.forEach((err) =>
+        message.error(err.message),
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const handleRemove = (productId, albumName, currentQty) => {
+  // const handleRemove = (productId, albumName, currentQty) => {
+  //   confirm({
+  //     title: "Remove Product",
+  //     icon: <ExclamationCircleOutlined style={{ color: "#ff4d4f" }} />,
+  //     content: `Are you sure you want to remove "${albumName}"?`,
+  //     okText: "Remove",
+  //     okType: "danger",
+  //     cancelText: "Back",
+
+  //     async onOk() {
+  //       try {
+  //         setLoading(true);
+
+  //         for (let i = 0; i < currentQty; i++) {
+  //           await removeFromCart(user.id, productId);
+  //         }
+
+  //         message.success(`${albumName} removed`);
+  //       } catch (error) {
+  //         message.error("Error removing product");
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     },
+  //   });
+  // };
+  const handleRemove = (productId, albumName) => {
     confirm({
       title: "Remove Product",
       icon: <ExclamationCircleOutlined style={{ color: "#ff4d4f" }} />,
@@ -60,14 +89,11 @@ const Cart = () => {
       async onOk() {
         try {
           setLoading(true);
-
-          for (let i = 0; i < currentQty; i++) {
-            await removeFromCart(user.id, productId);
-          }
-
-          message.success(`${albumName} removed`);
+          await removeFromCart(user.id, productId);
         } catch (error) {
-          message.error("Error removing product");
+          error.response?.data?.errors?.forEach((err) =>
+            message.error(err.message),
+          );
         } finally {
           setLoading(false);
         }
@@ -151,13 +177,14 @@ const Cart = () => {
                         type="text"
                         danger
                         icon={<DeleteOutlined />}
-                        onClick={() =>
-                          handleRemove(
-                            product.id,
-                            product.album,
-                            product.quantity,
-                          )
-                        }
+                        // onClick={() =>
+                        //   handleRemove(
+                        //     product.id,
+                        //     product.album,
+                        //     product.quantity,
+                        //   )
+                        // }
+                        onClick={() => handleRemove(product.id, product.album)}
                       />
                     </Tooltip>
                     <div className="subtotal">

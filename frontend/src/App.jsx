@@ -1,6 +1,12 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { useEffect } from "react";
-import Layout from "./components/Layout";
+import Layout from "./components/Layout/Layout";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import Cart from "./pages/Cart/Cart";
@@ -13,6 +19,16 @@ import UpdateProduct from "./pages/UpdateProduct/UpdateProduct";
 import Trash from "./pages/Trash/Trash";
 import NotFound from "./pages/NotFound/NotFound";
 import useUserStore from "./store/useUserStore";
+
+const ScrollController = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 const App = () => {
   const { user, checkAuth } = useUserStore();
@@ -30,6 +46,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <ScrollController />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
