@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { EnvironmentOutlined } from "@ant-design/icons";
 
 export const TimeContainer = styled.div`
   display: flex;
@@ -55,4 +56,9 @@ export const TimeContainer = styled.div`
       display: none;
     }
   }
+`;
+
+export const StyledEnvironmentIcon = styled(EnvironmentOutlined)`
+  color: #1890ff;
+  font-size: 1.1rem;
 `;

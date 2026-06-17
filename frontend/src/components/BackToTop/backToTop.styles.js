@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { VerticalAlignTopOutlined } from "@ant-design/icons";
 
 export const ScrollButton = styled.div`
   position: fixed;
@@ -35,4 +36,8 @@ export const ScrollButton = styled.div`
     bottom: 20px;
     right: 20px;
   }
+`;
+
+export const StyledIcon = styled(VerticalAlignTopOutlined)`
+  font-size: 20px;
 `;

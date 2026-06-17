@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { VerticalAlignTopOutlined } from "@ant-design/icons";
-import { ScrollButton } from "./backToTop.styles";
 import useThemeStore from "../../store/useThemeStore";
+import { ScrollButton, StyledIcon } from "./backToTop.styles";
 
 const BackToTop = () => {
   const [showButton, setShowButton] = useState(false);
@@ -30,7 +29,7 @@ const BackToTop = () => {
       $isDarkMode={isDarkMode}
       onClick={scrollToTop}
     >
-      <VerticalAlignTopOutlined style={{ fontSize: "20px" }} />
+      <StyledIcon />
     </ScrollButton>
   );
 };

@@ -1,10 +1,15 @@
-import { SearchOutlined, UndoOutlined } from "@ant-design/icons";
-import { Select, Input, Space, Checkbox, Button, Radio } from "antd";
+import React from "react";
+import { UndoOutlined } from "@ant-design/icons";
+import { Select, Input, Checkbox, Button, Radio, InputNumber } from "antd";
 import { useState } from "react";
 import useSearchBarStore from "../../store/useSearchBarStore";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../utils/api";
-import { Bar } from "./searchBar.styles";
+import {
+  Bar,
+  StyledSearchIcon,
+  GlobalDropdownStyles,
+} from "./searchBar.styles";
 import useThemeStore from "../../store/useThemeStore";
 
 const { Option } = Select;
@@ -40,68 +45,52 @@ const SearchBar = () => {
 
   return (
     <Bar $isDarkMode={isDarkMode}>
+      <GlobalDropdownStyles $isDarkMode={isDarkMode} />
       <div className="search-main-row">
         <Input
           className="search-input"
           placeholder="Search by album or artist..."
-          prefix={
-            <SearchOutlined
-              style={{ color: isDarkMode ? "#8c8c8c" : "#bfbfbf" }}
-            />
-          }
+          prefix={<StyledSearchIcon $isDarkMode={isDarkMode} />}
           value={searchTerms.byArtistOrAlbum}
           onChange={(e) => setSearchTerms({ byArtistOrAlbum: e.target.value })}
           allowClear
         />
 
         <div className="filter-controls">
-          <Space size="middle">
-            <Checkbox
-              className="filter-checkbox"
-              checked={showPriceFilters}
-              onChange={(e) => setShowPriceFilters(e.target.checked)}
-            >
-              Price
-            </Checkbox>
-            <Checkbox
-              className="filter-checkbox"
-              checked={showCategoryFilters}
-              onChange={(e) => setShowCategoryFilters(e.target.checked)}
-            >
-              Category
-            </Checkbox>
-            {hasActiveFilters && (
-              <Button
-                type="text"
-                icon={<UndoOutlined />}
-                onClick={handleReset}
-                danger
-                className="reset-btn"
-              >
-                Reset
-              </Button>
-            )}
-          </Space>
+          <Checkbox
+            className="filter-checkbox"
+            checked={showPriceFilters}
+            onChange={(e) => setShowPriceFilters(e.target.checked)}
+          >
+            Price
+          </Checkbox>
+          <Checkbox
+            className="filter-checkbox"
+            checked={showCategoryFilters}
+            onChange={(e) => setShowCategoryFilters(e.target.checked)}
+          >
+            Category
+          </Checkbox>
         </div>
       </div>
 
       {(showPriceFilters || showCategoryFilters) && (
         <div className="filters-row">
           {showPriceFilters && (
-            <Space className="price-filters-space">
-              <Input
-                type="number"
+            <div className="price-filters-space">
+              <InputNumber
                 placeholder="Min $"
                 className="number-input"
-                value={searchTerms.byMinPrice}
-                onChange={(e) => setSearchTerms({ byMinPrice: e.target.value })}
+                min={0}
+                value={searchTerms.byMinPrice || null}
+                onChange={(value) => setSearchTerms({ byMinPrice: value })}
               />
-              <Input
-                type="number"
+              <InputNumber
                 placeholder="Max $"
                 className="number-input"
-                value={searchTerms.byMaxPrice}
-                onChange={(e) => setSearchTerms({ byMaxPrice: e.target.value })}
+                min={0}
+                value={searchTerms.byMaxPrice || null}
+                onChange={(value) => setSearchTerms({ byMaxPrice: value })}
               />
               <Radio.Group
                 value={searchTerms.bySort}
@@ -112,11 +101,12 @@ const SearchBar = () => {
                 <Radio.Button value="asc">Asc</Radio.Button>
                 <Radio.Button value="desc">Desc</Radio.Button>
               </Radio.Group>
-            </Space>
+            </div>
           )}
           {showCategoryFilters && (
             <Select
               className="category-select"
+              popupClassName="dynasty-select-popup"
               placeholder="Select Category"
               value={searchTerms.byCategory || undefined}
               onChange={(value) => setSearchTerms({ byCategory: value })}
@@ -132,6 +122,17 @@ const SearchBar = () => {
                 </Option>
               ))}
             </Select>
+          )}
+          {hasActiveFilters && (
+            <Button
+              type="primary"
+              icon={<UndoOutlined />}
+              onClick={handleReset}
+              danger
+              className="reset-btn"
+            >
+              Reset
+            </Button>
           )}
         </div>
       )}

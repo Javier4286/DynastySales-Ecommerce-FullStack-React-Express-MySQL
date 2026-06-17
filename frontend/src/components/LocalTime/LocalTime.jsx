@@ -1,5 +1,5 @@
-import { ClockCircleOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import { TimeContainer } from "./localTime.styles";
+import { ClockCircleOutlined } from "@ant-design/icons";
+import { TimeContainer, StyledEnvironmentIcon } from "./localTime.styles";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../utils/api";
 import useThemeStore from "../../store/useThemeStore";
@@ -39,8 +39,8 @@ const LocalTime = () => {
 
   return (
     <TimeContainer $isDarkMode={isDarkMode}>
-      <EnvironmentOutlined style={{ color: "#1890ff", fontSize: "1.1rem" }} />
-      <span className="location-text">{location || "Locating..."}</span>
+      <StyledEnvironmentIcon />
+      <span className="location-text">{location}</span>
       <span className="time-divider">|</span>
 
       <div className="time-display">

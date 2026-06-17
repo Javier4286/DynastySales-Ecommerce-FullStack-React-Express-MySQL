@@ -1,4 +1,4 @@
-import { FooterContainer } from "./footer.styles";
+import { FooterContainer, FooterDescription } from "./footer.styles";
 import { Typography, Space } from "antd";
 import {
   MailOutlined,
@@ -10,7 +10,7 @@ import {
 import logoImg from "../../assets/dynastySales_logo.png";
 import useThemeStore from "../../store/useThemeStore";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -28,16 +28,10 @@ const Footer = () => {
             />
             <div className="footer-logo-text">DynastySales</div>
           </div>
-          <Text
-            style={{
-              color: isDarkMode ? "#b3b3b3" : "#434343",
-              lineHeight: "1.6",
-              fontWeight: 500,
-            }}
-          >
+          <FooterDescription $isDarkMode={isDarkMode}>
             Premium vinyl and music store. We bring the best artists and albums
             directly to your doorstep with quality and passion.
-          </Text>
+          </FooterDescription>
         </div>
 
         <div className="footer-section">

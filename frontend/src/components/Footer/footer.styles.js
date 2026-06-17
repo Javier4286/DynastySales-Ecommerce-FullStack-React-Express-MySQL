@@ -1,11 +1,14 @@
 import styled from "styled-components";
+import { Typography } from "antd";
+
+const { Text } = Typography;
 
 export const FooterContainer = styled.footer`
   background-color: ${(props) => (props.$isDarkMode ? "#121212" : "#d6eaff")};
   padding: 1.5rem 1rem;
   margin-top: auto;
   border-top: 1px solid
-    ${(props) => (props.$isDarkMode ? "#333333" : "#bae7ff")};
+    {(props) => (props.$isDarkMode ? "#333333" : "#bae7ff")};
   font-family: "Inter", sans-serif;
   transition:
     background-color 0.3s ease,
@@ -120,7 +123,7 @@ export const FooterContainer = styled.footer`
     margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid
-      ${(props) => (props.$isDarkMode ? "#333333" : "#bae7ff")};
+      {(props) => (props.$isDarkMode ? "#333333" : "#bae7ff")};
     color: ${(props) => (props.$isDarkMode ? "#8c8c8c" : "#595959")};
     font-size: 0.75rem;
     line-height: 1.5;
@@ -138,4 +141,10 @@ export const FooterContainer = styled.footer`
       padding-top: 10px;
     }
   }
+`;
+
+export const FooterDescription = styled(Text)`
+  color: ${(props) => (props.$isDarkMode ? "#b3b3b3" : "#434343")} !important;
+  line-height: 1.6;
+  font-weight: 500;
 `;

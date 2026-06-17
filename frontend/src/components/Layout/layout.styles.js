@@ -1,6 +1,15 @@
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
-const LayoutContainer = styled.div`
+export const GlobalLayoutStyles = createGlobalStyle`
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: ${(props) => (props.$isDarkMode ? "#121212" : "#f4f6f9")} !important;
+  }
+`;
+
+export const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -10,17 +19,7 @@ const LayoutContainer = styled.div`
   background-color: ${(props) => (props.$isDarkMode ? "#121212" : "#f4f6f9")};
   color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#333333")};
 
-  html,
-  body {
-    margin: 0 !important;
-    padding: 0 !important;
-    background-color: ${(props) =>
-      props.$isDarkMode ? "#121212" : "#f4f6f9"} !important;
-  }
-
   .main-content {
     flex: 1;
   }
 `;
-
-export default LayoutContainer;
