@@ -1,7 +1,8 @@
 import styled, { createGlobalStyle } from "styled-components";
-import { Button, Card, Typography } from "antd";
+import { Button, Card, Typography, Input, InputNumber } from "antd";
 
 const { Title } = Typography;
+const { TextArea } = Input;
 
 export const SelectDropdownStyles = createGlobalStyle`
   .custom-category-dropdown {
@@ -180,4 +181,58 @@ export const CancelButton = styled(Button)`
     color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#000000")} !important;
     border-color: #1a1a1a !important;
   }
+`;
+
+export const StyledInput = styled(Input)`
+  background-color: ${(props) =>
+    props.$isDarkMode ? "#2c2c2c" : "#ffffff"} !important;
+  border-color: ${(props) =>
+    props.$isDarkMode ? "#434343" : "#d9d9d9"} !important;
+  color: ${(props) =>
+    props.$isDarkMode ? "#ffffff" : "rgba(0, 0, 0, 0.88)"} !important;
+`;
+
+export const StyledInputNumber = styled(InputNumber)`
+  width: 100%;
+  background-color: ${(props) =>
+    props.$isDarkMode ? "#2c2c2c" : "#ffffff"} !important;
+  border-color: ${(props) =>
+    props.$isDarkMode ? "#434343" : "#d9d9d9"} !important;
+  color: ${(props) =>
+    props.$isDarkMode ? "#ffffff" : "rgba(0, 0, 0, 0.88)"} !important;
+`;
+
+export const StyledTextArea = styled(TextArea)`
+  background-color: ${(props) =>
+    props.$isDarkMode ? "#2c2c2c" : "#ffffff"} !important;
+  border-color: ${(props) =>
+    props.$isDarkMode ? "#434343" : "#d9d9d9"} !important;
+  color: ${(props) =>
+    props.$isDarkMode ? "#ffffff" : "rgba(0, 0, 0, 0.88)"} !important;
+  border-radius: 8px !important;
+`;
+
+export const DropdownContainer = styled.div`
+  background-color: ${(props) => (props.$isDarkMode ? "#1f1f1f" : "#ffffff")};
+`;
+
+export const DropdownDivider = styled.div`
+  margin: 8px 0;
+  border-bottom: 1px solid
+    ${(props) => (props.$isDarkMode ? "#434343" : "#f0f0f0")};
+`;
+
+export const DropdownInputContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  padding: 0 8px 4px;
+`;
+
+export const DropdownAddButton = styled(Button)`
+  font-weight: 600;
+  color: ${(props) => (props.$isDarkMode ? "#1890ff" : "#1a1a1a")} !important;
+`;
+
+export const PrefixCurrency = styled.span`
+  color: ${(props) => (props.$isDarkMode ? "#8c8c8c" : "rgba(0, 0, 0, 0.45)")};
 `;
