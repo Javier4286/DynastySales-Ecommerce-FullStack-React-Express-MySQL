@@ -48,7 +48,10 @@ const Navbar = () => {
         <div className="nav-actions">
           {!isAuthPage && (
             <>
-              <Tooltip title={isDarkMode ? "Light Mode" : "Dark Mode"}>
+              <Tooltip
+                title={isDarkMode ? "Light Mode" : "Dark Mode"}
+                mouseLeaveDelay={0}
+              >
                 <button
                   onClick={toggleTheme}
                   className={`theme-btn ${isDarkMode ? "dark" : "light"}`}
@@ -59,12 +62,12 @@ const Navbar = () => {
 
               {!user ? (
                 <>
-                  <Tooltip title="Register">
+                  <Tooltip title="Register" mouseLeaveDelay={0}>
                     <Link to="/register" className="action-icon-wrapper">
                       <UserAddOutlined />
                     </Link>
                   </Tooltip>
-                  <Tooltip title="Login">
+                  <Tooltip title="Login" mouseLeaveDelay={0}>
                     <Link to="/login" className="action-icon-wrapper">
                       <LoginOutlined />
                     </Link>
@@ -74,31 +77,31 @@ const Navbar = () => {
                 <>
                   <span className="welcome-msg">Hello {user.first_name}!</span>
                   {!user.is_admin ? (
-                    <Tooltip title="My Cart">
+                    <Tooltip title="My Cart" mouseLeaveDelay={0}>
                       <Link to="/cart" className="action-icon-wrapper">
                         <ShoppingCartOutlined />
                       </Link>
                     </Tooltip>
                   ) : (
                     <>
-                      <Tooltip title="Trash / Restore">
+                      <Tooltip title="Trash / Restore" mouseLeaveDelay={0}>
                         <Link to="/admin/trash" className="action-icon-wrapper">
                           <RestOutlined />
                         </Link>
                       </Tooltip>
-                      <Tooltip title="Add Product">
+                      <Tooltip title="Add Product" mouseLeaveDelay={0}>
                         <Link to="/addProduct" className="action-icon-wrapper">
                           <PlusSquareOutlined />
                         </Link>
                       </Tooltip>
                     </>
                   )}
-                  <Tooltip title="Edit Profile">
+                  <Tooltip title="Edit Profile" mouseLeaveDelay={0}>
                     <Link to="/editProfile" className="action-icon-wrapper">
                       <EditOutlined />
                     </Link>
                   </Tooltip>
-                  <Tooltip title="Logout">
+                  <Tooltip title="Logout" mouseLeaveDelay={0}>
                     <button
                       onClick={handleLogout}
                       className="logout-btn action-icon-wrapper"
