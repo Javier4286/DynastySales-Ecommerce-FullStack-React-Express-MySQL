@@ -20,20 +20,21 @@ const Section = styled.section`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 400px;
+    min-height: 50vh;
     width: 100%;
-    gap: 20px;
+    gap: 32px;
+    padding: 20px;
   }
 
   .cloud-warn-banner {
     max-width: 550px;
     background-color: ${(props) => (props.$isDarkMode ? "#2c1d00" : "#fffbe6")};
     border: 1px solid ${(props) => (props.$isDarkMode ? "#614700" : "#ffe58f")};
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 24px;
+    padding: 18px 24px;
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 14px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     animation: fadeIn 0.5s ease forwards;
 
@@ -44,7 +45,7 @@ const Section = styled.section`
     }
 
     .warn-text {
-      color: ${(props) => (props.$isDarkMode ? "#d4b106" : "#5c3e00")};
+      color: ${(props) => (props.$isDarkMode ? "#d4b106" : "#3d2a00")};
       font-size: 13.5px;
       line-height: 1.5;
       font-weight: 500;
@@ -183,13 +184,13 @@ const Section = styled.section`
   }
 
   @media (max-width: 600px) {
-    padding: 16px;
-    gap: 16px;
+    padding: 24px 16px;
+    gap: 24px;
 
     article {
       width: 100%;
-      max-width: 320px;
-      padding: 18px;
+      max-width: 290px;
+      padding: 20px;
     }
   }
 `;
