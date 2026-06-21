@@ -7,7 +7,6 @@ const useCartStore = create((set, get) => ({
   fetchCart: async (userId) => {
     try {
       const { data } = await api.get(`/carts/${userId}`);
-
       set({ cart: Array.isArray(data) ? data : [] });
     } catch (error) {
       set({ cart: [] });
@@ -21,9 +20,7 @@ const useCartStore = create((set, get) => ({
         product_id: product.id,
         quantity: 1,
       });
-
       await get().fetchCart(userId);
-
       return { success: true, data: response.data };
     } catch (error) {
       return {
@@ -40,9 +37,7 @@ const useCartStore = create((set, get) => ({
         product_id: productId,
         quantity: newQuantity,
       });
-
       await get().fetchCart(userId);
-
       return response;
     } catch (error) {
       console.error("Update error", error);
@@ -53,9 +48,7 @@ const useCartStore = create((set, get) => ({
   removeFromCart: async (userId, productId) => {
     try {
       const response = await api.delete(`/carts/clear/${userId}/${productId}`);
-
       await get().fetchCart(userId);
-
       return response;
     } catch (error) {
       console.error("Delete error", error);
@@ -66,10 +59,8 @@ const useCartStore = create((set, get) => ({
   createOrder: async (orderData) => {
     try {
       const { data } = await api.post("/orders", orderData);
-
       set({ cart: [] });
-
-      return { success: true, orderId: data.orderId };
+      return { success: true, orderId: data.orderId, message: data.message };
     } catch (error) {
       return {
         success: false,

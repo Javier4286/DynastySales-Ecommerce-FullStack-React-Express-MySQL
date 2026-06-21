@@ -15,7 +15,13 @@ import {
   CartItem,
   CartFooter,
   CancelButton,
+  CartContentWrapper,
+  StyledEmpty,
+  QtySelectorContainer,
+  QtyValue,
+  CheckoutButton,
 } from "./cart.styles";
+import useThemeStore from "../../store/useThemeStore";
 
 const { confirm } = Modal;
 
@@ -24,6 +30,7 @@ const Cart = () => {
   const [loading, setLoading] = useState(false);
   const { user } = useUserStore();
   const navigate = useNavigate();
+  const { isDarkMode } = useThemeStore();
 
   useEffect(() => {
     if (user?.id) fetchCart(user.id);
@@ -39,10 +46,8 @@ const Cart = () => {
 
     try {
       setLoading(true);
-
       await updateQuantity(user.id, productId, newQuantity);
     } catch (error) {
-      // message.error("Failed to update quantity");
       error.response?.data?.errors?.forEach((err) =>
         message.error(err.message),
       );
@@ -51,32 +56,6 @@ const Cart = () => {
     }
   };
 
-  // const handleRemove = (productId, albumName, currentQty) => {
-  //   confirm({
-  //     title: "Remove Product",
-  //     icon: <ExclamationCircleOutlined style={{ color: "#ff4d4f" }} />,
-  //     content: `Are you sure you want to remove "${albumName}"?`,
-  //     okText: "Remove",
-  //     okType: "danger",
-  //     cancelText: "Back",
-
-  //     async onOk() {
-  //       try {
-  //         setLoading(true);
-
-  //         for (let i = 0; i < currentQty; i++) {
-  //           await removeFromCart(user.id, productId);
-  //         }
-
-  //         message.success(`${albumName} removed`);
-  //       } catch (error) {
-  //         message.error("Error removing product");
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     },
-  //   });
-  // };
   const handleRemove = (productId, albumName) => {
     confirm({
       title: "Remove Product",
@@ -85,6 +64,7 @@ const Cart = () => {
       okText: "Remove",
       okType: "danger",
       cancelText: "Back",
+      className: isDarkMode ? "dark-modal-confirm" : "",
 
       async onOk() {
         try {
@@ -103,29 +83,32 @@ const Cart = () => {
 
   if (!user)
     return (
-      <CartContainer>
+      <CartContainer $isDarkMode={isDarkMode}>
         <h1>Please log in to see your cart</h1>
       </CartContainer>
     );
 
   return (
-    <CartContainer>
+    <CartContainer $isDarkMode={isDarkMode}>
       <Spin spinning={loading}>
-        <div style={{ minHeight: "200px" }}>
+        <CartContentWrapper>
           <h1>Your Cart</h1>
           {cart.length === 0 ? (
-            <Empty
+            <StyledEmpty
               description="Your cart is empty"
-              style={{ padding: "60px 0" }}
+              $isDarkMode={isDarkMode}
             >
-              <CancelButton onClick={() => navigate("/")}>
+              <CancelButton
+                $isDarkMode={isDarkMode}
+                onClick={() => navigate("/")}
+              >
                 Go to Home
               </CancelButton>
-            </Empty>
+            </StyledEmpty>
           ) : (
             <>
               {cart.map((product) => (
-                <CartItem key={product.id}>
+                <CartItem key={product.id} $isDarkMode={isDarkMode}>
                   <img
                     src={
                       product.image.startsWith("http://") ||
@@ -142,16 +125,7 @@ const Cart = () => {
                     <span className="unit-price">${product.price} each</span>
                   </div>
                   <div className="actions">
-                    <div
-                      className="qty-selector"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        background: "#f0f0f0",
-                        borderRadius: "20px",
-                        padding: "4px",
-                      }}
-                    >
+                    <QtySelectorContainer $isDarkMode={isDarkMode}>
                       <Button
                         type="text"
                         icon={<MinusOutlined />}
@@ -160,9 +134,9 @@ const Cart = () => {
                         }
                         disabled={product.quantity <= 1}
                       />
-                      <span style={{ fontWeight: 700, padding: "0 10px" }}>
+                      <QtyValue $isDarkMode={isDarkMode}>
                         {product.quantity}
-                      </span>
+                      </QtyValue>
                       <Button
                         type="text"
                         icon={<PlusOutlined />}
@@ -171,19 +145,12 @@ const Cart = () => {
                         }
                         disabled={product.quantity >= product.stock}
                       />
-                    </div>
+                    </QtySelectorContainer>
                     <Tooltip title="Remove">
                       <Button
                         type="text"
                         danger
                         icon={<DeleteOutlined />}
-                        // onClick={() =>
-                        //   handleRemove(
-                        //     product.id,
-                        //     product.album,
-                        //     product.quantity,
-                        //   )
-                        // }
                         onClick={() => handleRemove(product.id, product.album)}
                       />
                     </Tooltip>
@@ -194,26 +161,29 @@ const Cart = () => {
                 </CartItem>
               ))}
 
-              <CartFooter>
+              <CartFooter $isDarkMode={isDarkMode}>
                 <div className="total-section">
                   <span>Total Amount:</span>
                   <h3>${total.toFixed(2)}</h3>
                 </div>
                 <div className="footer-btns">
-                  <CancelButton onClick={() => navigate("/")}>
+                  <CancelButton
+                    $isDarkMode={isDarkMode}
+                    onClick={() => navigate("/")}
+                  >
                     Cancel
                   </CancelButton>
-                  <button
-                    className="checkout-btn"
+                  <CheckoutButton
+                    $isDarkMode={isDarkMode}
                     onClick={() => navigate("/checkout")}
                   >
                     Checkout
-                  </button>
+                  </CheckoutButton>
                 </div>
               </CartFooter>
             </>
           )}
-        </div>
+        </CartContentWrapper>
       </Spin>
     </CartContainer>
   );
