@@ -14,6 +14,7 @@ const Section = styled.section`
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  box-sizing: border-box;
 
   .loader-container {
     display: flex;
@@ -24,10 +25,12 @@ const Section = styled.section`
     width: 100%;
     gap: 32px;
     padding: 20px;
+    box-sizing: border-box;
   }
 
   .cloud-warn-banner {
-    max-width: 550px;
+    max-width: 100%;
+    width: 550px;
     background-color: ${(props) => (props.$isDarkMode ? "#2c1d00" : "#fffbe6")};
     border: 1px solid ${(props) => (props.$isDarkMode ? "#614700" : "#ffe58f")};
     border-radius: 24px;
@@ -37,6 +40,7 @@ const Section = styled.section`
     gap: 14px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     animation: fadeIn 0.5s ease forwards;
+    box-sizing: border-box;
 
     .warn-icon {
       font-size: 20px;
@@ -59,6 +63,7 @@ const Section = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
   }
 
   article {
@@ -78,6 +83,7 @@ const Section = styled.section`
     align-items: center;
     text-align: center;
     border: 1px solid ${(props) => (props.$isDarkMode ? "#333333" : "#eeebe5")};
+    box-sizing: border-box;
 
     &:hover {
       transform: translateY(-10px);
@@ -184,12 +190,12 @@ const Section = styled.section`
   }
 
   @media (max-width: 600px) {
-    padding: 24px 16px;
-    gap: 24px;
+    padding: 24px 12px;
+    gap: 20px;
 
     article {
       width: 100%;
-      max-width: 290px;
+      max-width: 260px;
       padding: 20px;
     }
   }
