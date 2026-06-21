@@ -40,17 +40,12 @@ const Home = () => {
   });
 
   useEffect(() => {
-    let timer;
-    if (isLoading && isExternalEnv) {
-      timer = setTimeout(() => {
-        setShowCloudWarn(true);
-      }, 2500);
+    if (isExternalEnv && (isLoading || products.length === 0)) {
+      setShowCloudWarn(true);
     } else {
       setShowCloudWarn(false);
     }
-
-    return () => clearTimeout(timer);
-  }, [isLoading, isExternalEnv]);
+  }, [isLoading, products.length, isExternalEnv]);
 
   const handleCart = async (product) => {
     if (!user) return message.warning("Please log in to add items");
@@ -99,6 +94,15 @@ const Home = () => {
     <Section $isDarkMode={isDarkMode}>
       {products.length === 0 ? (
         <div className="empty-container">
+          {showCloudWarn && (
+            <div className="cloud-warn-banner" style={{ marginBottom: "20px" }}>
+              <WarningOutlined className="warn-icon" />
+              <div className="warn-text">
+                Connecting to free-tier cloud hosting (Render). The initial
+                request may take a few seconds to spin up the server.
+              </div>
+            </div>
+          )}
           <Empty description="No products found" />
         </div>
       ) : (
