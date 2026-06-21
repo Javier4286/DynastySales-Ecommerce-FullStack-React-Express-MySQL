@@ -18,13 +18,16 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import api from "../../utils/api";
-import { UpdateContainer } from "./updateProduct.styles";
+import useThemeStore from "../../store/useThemeStore";
+import { UpdateContainer, SelectDropdownStyles } from "./updateProduct.styles";
 
 const { Title } = Typography;
 
 const UpdateProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isDarkMode } = useThemeStore();
+
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -40,13 +43,20 @@ const UpdateProduct = () => {
 
         setCategories(catRes.data);
 
-        form.setFieldsValue(prodRes.data);
+        form.setFieldsValue({
+          ...prodRes.data,
+          category_id: Number(prodRes.data.category_id),
+          release_year: Number(prodRes.data.release_year),
+          price: Number(prodRes.data.price),
+          stock: Number(prodRes.data.stock),
+        });
       } catch (err) {
-        message.error("Failed to load product data");
+        message.error(err.response?.data?.message || "Error");
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, [id, form]);
 
@@ -54,107 +64,160 @@ const UpdateProduct = () => {
     setSubmitting(true);
 
     try {
-      await api.put(`/products/editProduct/${id}`, values);
+      const response = await api.put(`/products/editProduct/${id}`, values);
 
-      message.success("Product updated successfully");
+      message.success(response.data?.message || "Product updated successfully");
 
       navigate("/");
     } catch (err) {
-      if (err.response && err.response.data.errors) {
-        const backendErrors = err.response.data.errors.map((error) => ({
-          name: error.field,
-          errors: [error.message],
-        }));
-
-        form.setFields(backendErrors);
-
-        console.warn("Backend validation failed:", err.response.data.errors);
-      } else {
-        message.error(
-          err.response?.data?.message || "An unexpected error occurred",
+      if (err.response?.data?.errors) {
+        form.setFields(
+          err.response.data.errors.map((e) => ({
+            name: e.field,
+            errors: [e.message],
+          })),
         );
+      } else {
+        message.error(err.response?.data?.message || "Error");
       }
     } finally {
       setSubmitting(false);
     }
   };
 
-  if (loading)
-    return (
-      <Spin size="large" style={{ display: "block", margin: "100px auto" }} />
-    );
-
   return (
-    <UpdateContainer>
-      <Card className="update-card">
-        <Title level={3}>
-          <EditOutlined /> Edit Product
-        </Title>
-        <Form form={form} layout="vertical" onFinish={onFinish}>
-          <Form.Item name="category_id" label="Category">
-            <Select placeholder="Select a category">
-              {categories.map((c) => (
-                <Select.Option key={c.id} value={c.id}>
-                  {c.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
+    <>
+      <SelectDropdownStyles />
 
-          <div className="form-grid">
-            <Form.Item name="artist" label="Artist">
-              <Input size="large" />
-            </Form.Item>
-            <Form.Item name="album" label="Album Title">
-              <Input size="large" />
-            </Form.Item>
-          </div>
+      <UpdateContainer $isDarkMode={isDarkMode}>
+        <Card className="update-card" bordered={false}>
+          <Spin spinning={loading}>
+            <Title level={3} className="update-title">
+              <EditOutlined /> Edit Product
+            </Title>
 
-          <div className="stats-grid">
-            <Form.Item name="release_year" label="Year">
-              <InputNumber
-                style={{ width: "100%" }}
-                size="large"
-                placeholder="YYYY"
-              />
-            </Form.Item>
-            <Form.Item name="price" label="Price">
-              <InputNumber prefix="$" style={{ width: "100%" }} size="large" />
-            </Form.Item>
-            <Form.Item name="stock" label="Stock">
-              <InputNumber style={{ width: "100%" }} size="large" />
-            </Form.Item>
-          </div>
-
-          <Form.Item name="description" label="Description">
-            <Input.TextArea rows={4} />
-          </Form.Item>
-
-          <Form.Item name="image" label="Image URL">
-            <Input
-              size="large"
-              placeholder="http://localhost:3000/images/..."
-            />
-          </Form.Item>
-
-          <Space
-            style={{ width: "100%", justifyContent: "flex-end", marginTop: 10 }}
-          >
-            <Button icon={<RollbackOutlined />} onClick={() => navigate("/")}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              icon={<SaveOutlined />}
-              loading={submitting}
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={onFinish}
+              autoComplete="off"
             >
-              Save Changes
-            </Button>
-          </Space>
-        </Form>
-      </Card>
-    </UpdateContainer>
+              <Form.Item
+                name="category_id"
+                label="Category"
+                rules={[{ required: true }]}
+              >
+                <Select
+                  placeholder="Select"
+                  popupClassName={
+                    isDarkMode
+                      ? "category-dropdown-dark"
+                      : "category-dropdown-light"
+                  }
+                >
+                  {categories.map((c) => (
+                    <Select.Option key={c.id} value={c.id}>
+                      {c.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+
+              <div className="form-grid">
+                <Form.Item
+                  name="artist"
+                  label="Artist"
+                  rules={[{ required: true }]}
+                >
+                  <Input size="large" />
+                </Form.Item>
+
+                <Form.Item
+                  name="album"
+                  label="Album Title"
+                  rules={[{ required: true }]}
+                >
+                  <Input size="large" />
+                </Form.Item>
+              </div>
+
+              <div className="stats-grid">
+                <Form.Item
+                  name="release_year"
+                  label="Year"
+                  rules={[{ required: true }]}
+                >
+                  <InputNumber className="full-width" size="large" controls />
+                </Form.Item>
+
+                <Form.Item
+                  name="price"
+                  label="Price"
+                  rules={[{ required: true }]}
+                >
+                  <InputNumber
+                    className="full-width"
+                    size="large"
+                    controls
+                    min={0}
+                    precision={2}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  name="stock"
+                  label="Stock"
+                  rules={[{ required: true }]}
+                >
+                  <InputNumber
+                    className="full-width"
+                    size="large"
+                    controls
+                    min={0}
+                  />
+                </Form.Item>
+              </div>
+
+              <Form.Item
+                name="description"
+                label="Description"
+                rules={[{ required: true }]}
+              >
+                <Input.TextArea rows={4} />
+              </Form.Item>
+
+              <Form.Item
+                name="image"
+                label="Image URL"
+                rules={[{ required: true }]}
+              >
+                <Input size="large" />
+              </Form.Item>
+
+              <Space className="actions-space">
+                <Button
+                  icon={<RollbackOutlined />}
+                  onClick={() => navigate("/")}
+                  className="cancel-btn"
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  icon={<SaveOutlined />}
+                  loading={submitting}
+                  className="save-btn"
+                >
+                  Save Changes
+                </Button>
+              </Space>
+            </Form>
+          </Spin>
+        </Card>
+      </UpdateContainer>
+    </>
   );
 };
 

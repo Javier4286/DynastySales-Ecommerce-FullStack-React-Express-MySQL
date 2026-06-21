@@ -9,10 +9,11 @@ export const LoginContainer = styled.div`
   align-items: center;
   min-height: calc(100vh - 90px);
   width: 100%;
-  background-color: #f0f2f5;
+  background-color: ${(props) => (props.$isDarkMode ? "#121212" : "#f0f2f5")};
   padding: 20px;
   box-sizing: border-box;
   font-family: "Inter", sans-serif;
+  transition: background-color 0.3s ease;
 
   @media (max-width: 480px) {
     padding: 10px;
@@ -23,50 +24,109 @@ export const CenteredTitle = styled(Title)`
   text-align: center !important;
   margin: 0 !important;
   font-weight: 800 !important;
-  color: #1a1a1a !important;
+  color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")} !important;
   letter-spacing: -1px;
 `;
 
 export const StyledCard = styled(Card)`
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: ${(props) =>
+    props.$isDarkMode
+      ? "0 12px 40px rgba(0, 0, 0, 0.5)"
+      : "0 12px 40px rgba(0, 0, 0, 0.08)"};
   border-radius: 20px;
-  border: 1px solid #eee;
+  border: 1px solid ${(props) => (props.$isDarkMode ? "#333333" : "#eee")};
+  background-color: ${(props) => (props.$isDarkMode ? "#1e1e1e" : "#ffffff")};
+  transition: all 0.3s ease;
 
   .ant-card-head {
     border-bottom: none;
     padding-top: 40px;
+    background-color: transparent;
   }
 
   .ant-card-body {
     padding: 24px 40px 40px 40px;
   }
 
+  .password-item {
+    margin-bottom: 30px;
+  }
+
+  .actions-item {
+    margin-bottom: 0;
+  }
+
   .ant-form-item-label > label {
     font-weight: 700;
-    color: #1a1a1a;
+    color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")};
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
-  .ant-input,
-  .ant-input-password {
+  .ant-input-affix-wrapper {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .ant-input-affix-wrapper,
+  .ant-input {
+    background-color: ${(props) =>
+      props.$isDarkMode ? "#2a2a2a" : "#ffffff"} !important;
+    color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")} !important;
     border-radius: 8px;
-    height: 48px;
-    border-color: #d9d9d9;
+    padding: 12px 16px;
+    border-color: ${(props) => (props.$isDarkMode ? "#444444" : "#d9d9d9")};
+    box-sizing: border-box;
+
+    input {
+      background-color: transparent !important;
+      color: ${(props) =>
+        props.$isDarkMode ? "#ffffff" : "#1a1a1a"} !important;
+
+      &::placeholder {
+        color: ${(props) =>
+          props.$isDarkMode ? "#aaaaaa" : "#bfbfbf"} !important;
+      }
+    }
 
     &:hover,
-    &:focus {
-      border-color: #1a1a1a !important;
+    &:focus,
+    &-focused {
+      border-color: ${(props) =>
+        props.$isDarkMode ? "#ffffff" : "#1a1a1a"} !important;
+      box-shadow: none !important;
     }
+
+    &::placeholder {
+      color: ${(props) =>
+        props.$isDarkMode ? "#aaaaaa" : "#bfbfbf"} !important;
+    }
+
+    .ant-input-password-icon {
+      color: ${(props) =>
+        props.$isDarkMode ? "#aaaaaa" : "#888888"} !important;
+
+      &:hover {
+        color: ${(props) =>
+          props.$isDarkMode ? "#ffffff" : "#1a1a1a"} !important;
+      }
+    }
+  }
+
+  .ant-form-item-explain-error {
+    color: #ff4d4f;
+    margin-top: 4px;
   }
 
   @media (max-width: 480px) {
     max-width: 100%;
     box-shadow: none;
     border-radius: 12px;
+    border: ${(props) => (props.$isDarkMode ? "1px solid #333333" : "none")};
+
     .ant-card-body {
       padding: 20px;
     }
@@ -78,12 +138,15 @@ export const StyleButton = styled(Button)`
   font-weight: 700;
   height: 48px;
   border-radius: 8px;
-  background-color: #1a1a1a !important;
+  background-color: ${(props) =>
+    props.$isDarkMode ? "#ffffff" : "#1a1a1a"} !important;
+  color: ${(props) => (props.$isDarkMode ? "#121212" : "#ffffff")} !important;
   border: none;
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: #404040 !important;
+    background-color: ${(props) =>
+      props.$isDarkMode ? "#e0e0e0" : "#404040"} !important;
     transform: translateY(-2px);
   }
 `;
@@ -93,13 +156,35 @@ export const SecundaryButton = styled(Button)`
   font-weight: 700;
   height: 48px;
   border-radius: 8px;
-  background-color: #f5f5f5;
-  color: #1a1a1a;
-  border: 1px solid #d9d9d9;
+  background-color: ${(props) => (props.$isDarkMode ? "#2a2a2a" : "#f5f5f5")};
+  color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")};
+  border: 1px solid ${(props) => (props.$isDarkMode ? "#444444" : "#d9d9d9")};
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #e8e8e8 !important;
-    color: #000 !important;
-    border-color: #1a1a1a !important;
+    background-color: ${(props) =>
+      props.$isDarkMode ? "#3a3a3a" : "#e8e8e8"} !important;
+    color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#000000")} !important;
+    border-color: ${(props) =>
+      props.$isDarkMode ? "#ffffff" : "#1a1a1a"} !important;
+  }
+`;
+
+export const DemoLinkContainer = styled.div`
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.85rem;
+  color: ${(props) => (props.$isDarkMode ? "#aaaaaa" : "#666666")};
+
+  a {
+    font-weight: 600;
+    color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")};
+    text-decoration: underline;
+    margin-left: 4px;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: ${(props) => (props.$isDarkMode ? "#e0e0e0" : "#404040")};
+    }
   }
 `;

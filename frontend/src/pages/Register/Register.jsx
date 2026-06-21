@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/api";
+import useThemeStore from "../../store/useThemeStore";
 import { Col, Form, Input, message, Row } from "antd";
 import {
   CenteredTitle,
@@ -11,25 +12,36 @@ import {
 
 const Register = () => {
   const navigate = useNavigate();
+  const { isDarkMode } = useThemeStore();
 
   const onFinish = async (values) => {
     try {
       const { data } = await api.post("users/register", values);
 
-      message.success(data.message || "Account created successfully!");
+      message.success(data.message);
 
       navigate("/login");
     } catch (error) {
-      error.response?.data?.errors?.forEach((err) =>
-        message.error(err.message),
-      );
+      const serverErrors = error.response?.data?.errors;
+      if (serverErrors && Array.isArray(serverErrors)) {
+        serverErrors.forEach((err) => message.error(err.message));
+      } else {
+        message.error(
+          error.response?.data?.message || "Server connection error",
+        );
+      }
     }
   };
 
   return (
-    <RegisterContainer>
+    <RegisterContainer $isDarkMode={isDarkMode}>
       <StyledCard
-        title={<CenteredTitle level={2}>Create Account</CenteredTitle>}
+        $isDarkMode={isDarkMode}
+        title={
+          <CenteredTitle level={2} $isDarkMode={isDarkMode}>
+            Create Account
+          </CenteredTitle>
+        }
         bordered={false}
       >
         <Form
@@ -116,7 +128,11 @@ const Register = () => {
           <Form.Item style={{ marginTop: 20, marginBottom: 0 }}>
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={12}>
-                <SecundaryButton block onClick={() => navigate("/")}>
+                <SecundaryButton
+                  block
+                  onClick={() => navigate("/")}
+                  $isDarkMode={isDarkMode}
+                >
                   Cancel
                 </SecundaryButton>
               </Col>
@@ -126,6 +142,7 @@ const Register = () => {
                   htmlType="submit"
                   block
                   size="large"
+                  $isDarkMode={isDarkMode}
                 >
                   Register Now
                 </StyleButton>

@@ -4,11 +4,13 @@ import { Spin, Empty, message, Tooltip, Button } from "antd";
 import { ReloadOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/api";
+import useThemeStore from "../../store/useThemeStore";
 import { TrashContainer, TrashItem, RestoreButton } from "./trash.styles";
 
 const Trash = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { isDarkMode } = useThemeStore();
 
   const { data: trashedProducts = [], isLoading } = useQuery({
     queryKey: ["products-trashed"],
@@ -25,20 +27,21 @@ const Trash = () => {
 
     onSuccess: () => {
       message.success("Product successfully restored to store");
-
       queryClient.invalidateQueries(["products-trashed"]);
-
       queryClient.invalidateQueries(["products"]);
     },
 
-    onError: () => {
-      message.error("System error: Could not restore product");
+    onError: (error) => {
+      const serverMessage =
+        error.response?.data?.message ||
+        "System error: Could not restore product";
+      message.error(serverMessage);
     },
   });
 
   if (isLoading) {
     return (
-      <TrashContainer>
+      <TrashContainer $isDarkMode={isDarkMode}>
         <div
           style={{
             display: "flex",
@@ -53,13 +56,16 @@ const Trash = () => {
   }
 
   return (
-    <TrashContainer>
+    <TrashContainer $isDarkMode={isDarkMode}>
       <div className="header-area">
         <Button
           type="text"
           icon={<ArrowLeftOutlined />}
           onClick={() => navigate("/")}
-          style={{ fontSize: "18px" }}
+          style={{
+            fontSize: "18px",
+            color: isDarkMode ? "#ffffff" : "#1a1a1a",
+          }}
         />
         <h1>Restore Products</h1>
       </div>
@@ -75,7 +81,7 @@ const Trash = () => {
         </Empty>
       ) : (
         trashedProducts.map((product) => (
-          <TrashItem key={product.id}>
+          <TrashItem key={product.id} $isDarkMode={isDarkMode}>
             <img
               className="thumb"
               src={
@@ -97,6 +103,7 @@ const Trash = () => {
                   icon={<ReloadOutlined />}
                   loading={restoreMutation.isLoading}
                   onClick={() => restoreMutation.mutate(product.id)}
+                  $isDarkMode={isDarkMode}
                 >
                   Restore
                 </RestoreButton>

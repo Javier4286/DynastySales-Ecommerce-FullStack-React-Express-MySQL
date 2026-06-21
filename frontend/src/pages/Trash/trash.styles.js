@@ -17,10 +17,14 @@ export const TrashContainer = styled.section`
     h1 {
       font-weight: 800;
       font-size: 2.5rem;
-      color: #1a1a1a;
+      color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")};
       margin: 0;
       letter-spacing: -1px;
     }
+  }
+
+  .ant-empty-description {
+    color: ${(props) => (props.$isDarkMode ? "#aaaaaa" : "#666666")} !important;
   }
 
   @media (max-width: 600px) {
@@ -41,14 +45,15 @@ export const TrashItem = styled.article`
   gap: 20px;
   align-items: center;
   padding: 20px;
-  background: white;
-  border-bottom: 1px solid #eee;
+  background: ${(props) => (props.$isDarkMode ? "#1e1e1e" : "white")};
+  border-bottom: 1px solid
+    ${(props) => (props.$isDarkMode ? "#333333" : "#eee")};
   margin-bottom: 10px;
   border-radius: 12px;
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: #f9f9f9;
+    background-color: ${(props) => (props.$isDarkMode ? "#252525" : "#f9f9f9")};
     transform: translateX(5px);
   }
 
@@ -57,7 +62,7 @@ export const TrashItem = styled.article`
     height: 80px;
     object-fit: cover;
     border-radius: 8px;
-    opacity: 0.7;
+    opacity: ${(props) => (props.$isDarkMode ? "0.8" : "0.7")};
   }
 
   .info {
@@ -65,17 +70,17 @@ export const TrashItem = styled.article`
       font-size: 1.1rem;
       margin: 0;
       font-weight: 700;
-      color: #333;
+      color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#333333")};
     }
     h3 {
       font-size: 0.9rem;
       margin: 0;
-      color: #888;
+      color: ${(props) => (props.$isDarkMode ? "#aaaaaa" : "#888888")};
     }
     .price {
       font-size: 0.9rem;
       font-weight: 600;
-      color: #1a1a1a;
+      color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")};
       margin-top: 5px;
       display: block;
     }
@@ -96,7 +101,8 @@ export const TrashItem = styled.article`
     .actions {
       width: 100%;
       justify-content: center;
-      border-top: 1px solid #f0f0f0;
+      border-top: 1px solid
+        ${(props) => (props.$isDarkMode ? "#333333" : "#f0f0f0")};
       margin-top: 10px;
       padding-top: 15px;
     }
@@ -107,16 +113,19 @@ export const RestoreButton = styled(Button)`
   font-weight: 700;
   height: 40px;
   border-radius: 8px;
-  background-color: #34495e;
-  color: white;
+  background-color: ${(props) =>
+    props.$isDarkMode ? "#ffffff" : "#34495e"} !important;
+  color: ${(props) => (props.$isDarkMode ? "#121212" : "#ffffff")} !important;
   border: none;
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #1a1a1a !important;
-    color: white !important;
+    background-color: ${(props) =>
+      props.$isDarkMode ? "#e0e0e0" : "#1a1a1a"} !important;
+    color: ${(props) => (props.$isDarkMode ? "#121212" : "#ffffff")} !important;
     transform: scale(1.05);
   }
 `;

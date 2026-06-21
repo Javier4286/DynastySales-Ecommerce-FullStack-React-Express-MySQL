@@ -1,16 +1,24 @@
 import { API_BASE_URL } from "../../utils/api";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Spin, message, Tag, Button } from "antd";
+import { Spin, message, Tag } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import api from "../../utils/api";
 import useUserStore from "../../store/useUserStore";
-import { Article, Section, CancelButton } from "./productDetail.styles";
+import useThemeStore from "../../store/useThemeStore";
+import {
+  Article,
+  Section,
+  CancelButton,
+  PrimaryButton,
+  LoadingContainer,
+} from "./productDetail.styles";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useUserStore();
+  const { isDarkMode } = useThemeStore();
 
   const {
     data: product,
@@ -35,45 +43,42 @@ const ProductDetail = () => {
 
       message.success(response.data.message);
     } catch (error) {
-      message.error(error.response?.data?.message);
+      message.error(error.response?.data?.message || "Error adding to cart");
     }
   };
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <Section>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "300px",
-            width: "100%",
-          }}
-        >
-          <Spin size="large">
-            <div style={{ padding: "40px" }} />
-          </Spin>
-        </div>
+      <Section $isDarkMode={isDarkMode}>
+        <LoadingContainer>
+          <Spin size="large" />
+        </LoadingContainer>
       </Section>
     );
+  }
 
-  if (isError || !product)
+  if (isError || !product) {
     return (
-      <Section>
-        <h2>Vinyl not found</h2>
-        <CancelButton
-          onClick={() => navigate("/")}
-          style={{ marginTop: "20px" }}
-        >
-          Back to Home
-        </CancelButton>
+      <Section $isDarkMode={isDarkMode}>
+        <Article $isDarkMode={isDarkMode}>
+          <div className="details">
+            <h1>Vinyl not found</h1>
+            <CancelButton
+              $isDarkMode={isDarkMode}
+              onClick={() => navigate("/")}
+              style={{ marginTop: "20px" }}
+            >
+              Back to Home
+            </CancelButton>
+          </div>
+        </Article>
       </Section>
     );
+  }
 
   return (
-    <Section>
-      <Article>
+    <Section $isDarkMode={isDarkMode}>
+      <Article $isDarkMode={isDarkMode}>
         <div className="image-container">
           <img
             src={
@@ -105,23 +110,22 @@ const ProductDetail = () => {
           <div className="price-tag">${product.price}</div>
 
           <div className="actions">
-            <CancelButton onClick={() => navigate("/")}>Back</CancelButton>
+            <CancelButton
+              $isDarkMode={isDarkMode}
+              onClick={() => navigate("/")}
+            >
+              Back
+            </CancelButton>
             {user && !user.is_admin && product.stock > 0 && (
-              <Button
+              <PrimaryButton
+                $isDarkMode={isDarkMode}
                 type="primary"
                 size="large"
                 icon={<ShoppingCartOutlined />}
                 onClick={handleAddToCart}
-                style={{
-                  backgroundColor: "#1a1a1a",
-                  borderRadius: "20px",
-                  height: "50px",
-                  padding: "0 30px",
-                  border: "none",
-                }}
               >
                 Add to Cart
-              </Button>
+              </PrimaryButton>
             )}
           </div>
         </section>

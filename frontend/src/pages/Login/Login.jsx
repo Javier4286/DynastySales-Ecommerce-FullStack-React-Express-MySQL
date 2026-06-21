@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { Col, Form, Input, message, Row } from "antd";
 import useUserStore from "../../store/useUserStore";
 import useCartStore from "../../store/useCartStore";
+import useThemeStore from "../../store/useThemeStore";
 import api from "../../utils/api";
 import {
   CenteredTitle,
+  DemoLinkContainer,
   LoginContainer,
   SecundaryButton,
   StyleButton,
@@ -14,7 +16,9 @@ import {
 const Login = () => {
   const { fetchCart } = useCartStore();
   const { login } = useUserStore();
+  const { isDarkMode } = useThemeStore();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
 
   const onFinish = async (values) => {
     try {
@@ -24,21 +28,46 @@ const Login = () => {
 
       await fetchCart(data.user.id);
 
-      message.success(data.message || "Welcome back!");
+      message.success(data.message);
 
       navigate("/");
     } catch (error) {
-      message.error(error.response?.data?.message || "Login failed");
+      const serverErrors = error.response?.data?.errors;
+
+      if (serverErrors && Array.isArray(serverErrors)) {
+        serverErrors.forEach((err) => {
+          message.error(err.message);
+        });
+      } else {
+        message.error(
+          error.response?.data?.message || "Server connection error",
+        );
+      }
     }
   };
 
+  const handleAdminAutoFill = (e) => {
+    e.preventDefault();
+    form.setFieldsValue({
+      email: "admin@dynastysales.com",
+      password: "admin123",
+    });
+    message.info("Admin demo credentials loaded!");
+  };
+
   return (
-    <LoginContainer>
+    <LoginContainer $isDarkMode={isDarkMode}>
       <StyledCard
-        title={<CenteredTitle level={2}>Sign In</CenteredTitle>}
+        $isDarkMode={isDarkMode}
+        title={
+          <CenteredTitle level={2} $isDarkMode={isDarkMode}>
+            Sign In
+          </CenteredTitle>
+        }
         bordered={false}
       >
         <Form
+          form={form}
           layout="vertical"
           onFinish={onFinish}
           autoComplete="off"
@@ -56,10 +85,10 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item
+            className="password-item"
             label="Password"
             name="password"
             rules={[{ required: true, message: "Password is required" }]}
-            style={{ marginBottom: 30 }}
           >
             <Input.Password
               placeholder="Please enter your password"
@@ -67,10 +96,14 @@ const Login = () => {
             />
           </Form.Item>
 
-          <Form.Item style={{ marginBottom: 0 }}>
+          <Form.Item className="actions-item">
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={12}>
-                <SecundaryButton block onClick={() => navigate("/")}>
+                <SecundaryButton
+                  block
+                  onClick={() => navigate("/")}
+                  $isDarkMode={isDarkMode}
+                >
                   Cancel
                 </SecundaryButton>
               </Col>
@@ -80,12 +113,20 @@ const Login = () => {
                   htmlType="submit"
                   block
                   size="large"
+                  $isDarkMode={isDarkMode}
                 >
                   Log In
                 </StyleButton>
               </Col>
             </Row>
           </Form.Item>
+
+          <DemoLinkContainer $isDarkMode={isDarkMode}>
+            Want to explore?{" "}
+            <a href="#" onClick={handleAdminAutoFill}>
+              Quick Admin Login
+            </a>
+          </DemoLinkContainer>
         </Form>
       </StyledCard>
     </LoginContainer>

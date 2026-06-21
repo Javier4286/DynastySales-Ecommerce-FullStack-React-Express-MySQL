@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useUserStore from "../../store/useUserStore";
+import useThemeStore from "../../store/useThemeStore";
 import { useNavigate } from "react-router-dom";
 import { Col, Form, Input, message, Row } from "antd";
 import api from "../../utils/api";
@@ -17,6 +18,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { user, login } = useUserStore();
+  const { isDarkMode } = useThemeStore();
 
   useEffect(() => {
     if (user) {
@@ -36,20 +38,25 @@ const Profile = () => {
 
       login(data.user);
 
-      message.success(data.message || "Profile updated successfully");
+      message.success(data.message);
 
       setTimeout(() => {
         navigate("/");
       }, 1500);
     } catch (error) {
-      message.error(error.response?.data?.message || "Error updating profile");
+      message.error(error.response?.data?.message || "Server connection error");
     }
   };
 
   return (
-    <ProfileContainer>
+    <ProfileContainer $isDarkMode={isDarkMode}>
       <StyledCard
-        title={<CenteredTitle level={2}>Account Settings</CenteredTitle>}
+        $isDarkMode={isDarkMode}
+        title={
+          <CenteredTitle level={2} $isDarkMode={isDarkMode}>
+            Account Settings
+          </CenteredTitle>
+        }
         bordered={false}
       >
         <Form
@@ -127,9 +134,11 @@ const Profile = () => {
             <Input placeholder="Address" size="large" />
           </Form.Item>
 
-          <StyledDivider orientation="center">Security Check</StyledDivider>
+          <StyledDivider orientation="center" $isDarkMode={isDarkMode}>
+            Security Check
+          </StyledDivider>
 
-          <VerificationText>
+          <VerificationText $isDarkMode={isDarkMode}>
             To save these changes, please confirm your current password.
           </VerificationText>
 
@@ -152,12 +161,21 @@ const Profile = () => {
           <Form.Item style={{ marginBottom: 0 }}>
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={12}>
-                <CancelButton block onClick={() => navigate("/")}>
+                <CancelButton
+                  block
+                  onClick={() => navigate("/")}
+                  $isDarkMode={isDarkMode}
+                >
                   Discard Changes
                 </CancelButton>
               </Col>
               <Col xs={24} sm={12}>
-                <StyledButton type="primary" htmlType="submit" block>
+                <StyledButton
+                  type="primary"
+                  htmlType="submit"
+                  block
+                  $isDarkMode={isDarkMode}
+                >
                   Save Profile
                 </StyledButton>
               </Col>
