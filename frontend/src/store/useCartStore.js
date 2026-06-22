@@ -40,7 +40,6 @@ const useCartStore = create((set, get) => ({
       await get().fetchCart(userId);
       return response;
     } catch (error) {
-      console.error("Update error", error);
       throw error;
     }
   },
@@ -51,7 +50,6 @@ const useCartStore = create((set, get) => ({
       await get().fetchCart(userId);
       return response;
     } catch (error) {
-      console.error("Delete error", error);
       throw error;
     }
   },

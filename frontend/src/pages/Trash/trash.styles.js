@@ -1,3 +1,134 @@
+// import styled from "styled-components";
+// import { Button } from "antd";
+
+// export const TrashContainer = styled.section`
+//   max-width: 900px;
+//   margin: 40px auto;
+//   padding: 0 20px;
+//   font-family: "Inter", sans-serif;
+//   min-height: 70vh;
+
+//   .header-area {
+//     display: flex;
+//     align-items: center;
+//     gap: 20px;
+//     margin-bottom: 30px;
+
+//     h1 {
+//       font-weight: 800;
+//       font-size: 2.5rem;
+//       color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")};
+//       margin: 0;
+//       letter-spacing: -1px;
+//     }
+//   }
+
+//   .ant-empty-description {
+//     color: ${(props) => (props.$isDarkMode ? "#aaaaaa" : "#666666")} !important;
+//   }
+
+//   @media (max-width: 600px) {
+//     margin: 20px auto;
+//     .header-area {
+//       flex-direction: column;
+//       h1 {
+//         font-size: 1.8rem;
+//         text-align: center;
+//       }
+//     }
+//   }
+// `;
+
+// export const TrashItem = styled.article`
+//   display: grid;
+//   grid-template-columns: 80px 1fr auto;
+//   gap: 20px;
+//   align-items: center;
+//   padding: 20px;
+//   background: ${(props) => (props.$isDarkMode ? "#1e1e1e" : "white")};
+//   border-bottom: 1px solid
+//     ${(props) => (props.$isDarkMode ? "#333333" : "#eee")};
+//   margin-bottom: 10px;
+//   border-radius: 12px;
+//   transition: all 0.3s ease;
+
+//   &:hover {
+//     background-color: ${(props) => (props.$isDarkMode ? "#252525" : "#f9f9f9")};
+//     transform: translateX(5px);
+//   }
+
+//   .thumb {
+//     width: 80px;
+//     height: 80px;
+//     object-fit: cover;
+//     border-radius: 8px;
+//     opacity: ${(props) => (props.$isDarkMode ? "0.8" : "0.7")};
+//   }
+
+//   .info {
+//     h2 {
+//       font-size: 1.1rem;
+//       margin: 0;
+//       font-weight: 700;
+//       color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#333333")};
+//     }
+//     h3 {
+//       font-size: 0.9rem;
+//       margin: 0;
+//       color: ${(props) => (props.$isDarkMode ? "#aaaaaa" : "#888888")};
+//     }
+//     .price {
+//       font-size: 0.9rem;
+//       font-weight: 600;
+//       color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")};
+//       margin-top: 5px;
+//       display: block;
+//     }
+//   }
+
+//   .actions {
+//     display: flex;
+//     align-items: center;
+//     gap: 15px;
+//   }
+
+//   @media (max-width: 600px) {
+//     grid-template-columns: 1fr;
+//     text-align: center;
+//     justify-items: center;
+//     padding: 25px;
+
+//     .actions {
+//       width: 100%;
+//       justify-content: center;
+//       border-top: 1px solid
+//         ${(props) => (props.$isDarkMode ? "#333333" : "#f0f0f0")};
+//       margin-top: 10px;
+//       padding-top: 15px;
+//     }
+//   }
+// `;
+
+// export const RestoreButton = styled(Button)`
+//   font-weight: 700;
+//   height: 40px;
+//   border-radius: 8px;
+//   background-color: ${(props) =>
+//     props.$isDarkMode ? "#ffffff" : "#34495e"} !important;
+//   color: ${(props) => (props.$isDarkMode ? "#121212" : "#ffffff")} !important;
+//   border: none;
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+//   transition: all 0.3s ease;
+
+//   &:hover {
+//     background-color: ${(props) =>
+//       props.$isDarkMode ? "#e0e0e0" : "#1a1a1a"} !important;
+//     color: ${(props) => (props.$isDarkMode ? "#121212" : "#ffffff")} !important;
+//     transform: scale(1.05);
+//   }
+// `;
 import styled from "styled-components";
 import { Button } from "antd";
 
@@ -8,35 +139,50 @@ export const TrashContainer = styled.section`
   font-family: "Inter", sans-serif;
   min-height: 70vh;
 
-  .header-area {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 30px;
-
-    h1 {
-      font-weight: 800;
-      font-size: 2.5rem;
-      color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")};
-      margin: 0;
-      letter-spacing: -1px;
-    }
+  .empty-state {
+    margin-top: 60px;
   }
-
   .ant-empty-description {
     color: ${(props) => (props.$isDarkMode ? "#aaaaaa" : "#666666")} !important;
   }
 
   @media (max-width: 600px) {
     margin: 20px auto;
-    .header-area {
-      flex-direction: column;
-      h1 {
-        font-size: 1.8rem;
-        text-align: center;
-      }
+  }
+`;
+
+export const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 100px;
+`;
+
+export const HeaderArea = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+
+  h1 {
+    font-weight: 800;
+    font-size: 2.5rem;
+    color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")};
+    margin: 0;
+    letter-spacing: -1px;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    h1 {
+      font-size: 1.8rem;
+      text-align: center;
     }
   }
+`;
+
+export const StyledBackButton = styled(Button)`
+  font-size: 18px;
+  color: ${(props) => (props.$isDarkMode ? "#ffffff" : "#1a1a1a")};
 `;
 
 export const TrashItem = styled.article`
@@ -97,7 +243,6 @@ export const TrashItem = styled.article`
     text-align: center;
     justify-items: center;
     padding: 25px;
-
     .actions {
       width: 100%;
       justify-content: center;
