@@ -175,7 +175,7 @@ const Trash = () => {
 
   return (
     <TrashContainer $isDarkMode={isDarkMode}>
-      <HeaderArea>
+      <HeaderArea $isDarkMode={isDarkMode}>
         <StyledBackButton
           type="text"
           icon={<ArrowLeftOutlined />}
